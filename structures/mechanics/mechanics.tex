@@ -116,21 +116,165 @@
 	\end{frame}
 
 
-\section{Non-Linear strain measures}
+\section{Non-Linear strain measures introduction}
 	\begin{frame}{Introduction}
 		\begin{itemize}
 			\item Now suppose of being rigid, the body is deformable that is the relative deformation is introducing strain and stresses
 			\item LARGE DISPLACEMENTS + LARGE STRAINS
 			\item The first deals with displacements that are large, and therefore while finding the strains, we have to use higher orders of the displacement derivatives
-			\item The second deals with 			
+			\item The second deals with ????????????????????????????		
 		\end{itemize}
 	\end{frame}
 
 	\begin{frame}{One-D strain measures}
 		\begin{itemize}
 			\item Emphasize its only for One D! But same theory for other dimensions
-			\item 
+			\item A strain measure need not be fixed. Sometimes the strain measure we usually use may not be able to model the correct behaviour. When we choose any strain measure, the proper corresponding stress and the  constitutive relationship ($\ve{\sigma = C \varepsilon}$) has to be taken. 
+			\item The stress and strain have to be "work compatible". That is they are together used in the strain energy density function. 			
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{One-D strain measures : Types}
+		\begin{block}{Engineering strain}
+				\begin{itemize}
+				\item Engineering strain $\varepsilon_E = \dfrac{l - L}{L} =\dfrac{\Delta }{L}$. l is deformed length, L is initial undeformed
+				\item We could have also divided $\Delta$ by l (Change by deformed length). If $l \approx L$ then it would not matter.
+				\item $\varepsilon_E $ is the small infinitesimal strain, where the deformed and undeformed lengths are very similar.			
+			\end{itemize}
+		\end{block}
+		\begin{block}{Logarithimic strain}
+			\begin{itemize}
+			\item The instantaneous strain increment can be thought as $\varepsilon_L = \frac{\Delta_1}{L} + \frac{\Delta_2}{l_1} ...$
+			\item Or $d\varepsilon_L = \frac{dl}{l}$  
+			\item $\varepsilon_L = \int_{L}^{l}\dfrac{dl}{l} = ln \frac{l}{L}$
+			\item The integration is done between two configurations $L \rightarrow l$
+			\end{itemize}
+		\end{block}	
+	\end{frame}
+
+	\begin{frame}{One-D strain measures : Types}
+		These strains are more easily extrapolated to continuum (3d cases)
+		\begin{block}{Green strain}
+			\begin{itemize}
+				\item $\varepsilon_G = \dfrac{l^2 - L^2}{2L^2}$ 			
+			\end{itemize}
+		\end{block}
+		\begin{block}{Almansi strain}
+			\begin{itemize}
+				\item $\varepsilon_A = \dfrac{l^2 - L^2}{2l^2}$ 
+			\end{itemize}
+		\end{block}	
+	
+	\begin{itemize}
+		\item Suppose $l \approx L$ and therefore $\Delta$ is small
+		\item And $l = (L + \Delta)$
+		\item $\varepsilon_G = \dfrac{(L + \Delta)^2 - L^2}{2L^2} = \dfrac{(L^2 + \Delta^2 + 2 L \Delta  - L^2)}{2L^2} \approx \dfrac{\Delta }{L}$ (As $\Delta$ is very small and so $\Delta^2$ vanishes)
+		
+	\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Problem \#1}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.6\linewidth]{\pth/continuum/fig4}
+		\caption{}
+		\label{fig:fig1}
+	\end{figure}
+	\begin{itemize}
+		\item Initial length L, area A, volume V
+		\item  Final length l, area a, volume v
+		
+	\end{itemize}
+	\end{frame}
+
+	\begin{frame}
+		\begin{itemize}
+			\item In defining the equilibrium (Froces = 0 , No moments). We will be defining the internal stress by different strain measures.
+			\item Remember that a proper constitutive law has to be taken for a particularly strain measure
+			\item Here we have chosen the Cauchy stress and E randomly. The cauchy stress is the actual/true stress in the deformed state. (Or it is the stress in the deformed state which is in equilibrium)
 			
 		\end{itemize}
-		content
+		\begin{block}{Using two strain measures}
+			Green and logarithmic.
+			\begin{itemize}
+				\item Cauchy stress (True stress) $\sigma = E \varepsilon$ can be :
+				\item $\sigma = E \dfrac{l^2-L^2}{L^2}$
+				\item $\sigma = E ln\dfrac{l}{L}$
+			\end{itemize}
+		\end{block}
+	\end{frame}
+
+	\begin{frame}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.3\linewidth]{\pth/continuum/fig4}
+			\label{fig:fig1}
+		\end{figure}
+		\begin{itemize}
+		\item The bar will keep moving up until the vertical equilibrium is reached.
+		\item Vertical equilibrium at B is $F - T(x)sin \theta(x) = 0$, where $T(x)$ is the internal force and depends on $x$. $\theta$ is also dependant on $x$
+		\item Now we can construct a residual function $R(x) =  F - T(x)sin \theta(x)$ where the residual becomes zero for a particular solution of x. \footnote{Note that $\frac{d R}{d x}$ is the tangent stifness $K_{Bx}$ or force in direction B due to displacement x.}  So
+		\begin{equation}
+		R(x) = \sigma a sin \theta - F = \sigma(x) a \frac{ x}{l} - F
+		\end{equation} 	
+		\end{itemize}
+		
+		\begin{block}{Stress dependant on different strain measures}
+			\begin{itemize}
+				\item $T(x) = E \dfrac{l^2-L^2}{L^2} a \dfrac{x}{l}$  \hfill ($\sigma =  E \varepsilon_G$)
+				\item $T(x) = E ln\dfrac{l}{L} a \dfrac{x}{l}$ \hfill	($\sigma =  E \varepsilon_L$)			
+			\end{itemize}
+		\end{block}
+	\end{frame}
+
+	\begin{frame}
+		
+	\begin{block}{Stress dependant on different strain measures}
+		\begin{itemize}
+			\item $T(x) = E \dfrac{l^2-L^2}{L^2} a \dfrac{x}{l}$  \hfill ($\sigma =  E \varepsilon_G$)
+			\item $T(x) = E ln\dfrac{l}{L} a \dfrac{x}{l}$ \hfill	($\sigma =  E \varepsilon_L$)			
+		\end{itemize}
+	\end{block}
+
+	\begin{itemize}
+		\item l is a function of x, $l^2=D^2+x^2$
+		\item R(x) is therefore very nonlinear with respect to x. In R(x), F is not dependant on x. But sometimes it can be the case that the load is also nonlinear.	
+	\end{itemize}
+	
+	\begin{block}{Solving}
+		We need to solve the nonlinear equation R(x) = 0
+		
+		\begin{itemize}
+			\item So we use NR, or first order taylor series to linearise R and solve it iteratively
+			
+			\item $R(x_{i+1}) = R(x_{i}) + \frac{dR}{dx}|_{x_{i}}(x_{i+1}-x{i})$
+			\item We want R = 0 , so the value $R(x_{i+1}) = 0$
+			\item  $0 = R(x_{i}) + \frac{dR}{dx}|_{x_{i}}(x_{i+1}-x{i})$		
+		\end{itemize}
+	\end{block}
+	\end{frame}
+
+	\begin{frame}
+			\begin{figure}
+			\centering
+			\includegraphics[width=1\linewidth]{\pth/continuum/fig5}
+			\label{fig:fig1}
+		\end{figure}
+	\end{frame}
+
+	\begin{frame}{Summary Problem \#1}
+		\begin{itemize}
+			\item Regions where x is small, different mesasures gives okay results
+			\item We see different behaviour behaviours between the strain measures at higher strain
+			\item Snap through behaviour if we increase compressive load too much. Imagine you are pushing the truss down (-x) and suddenly it will roll to the other side. 
+			\item If truss  is initially vertical  (Like a column in tension, Therefore no rotation) : Same E should have not been used for both different strain measures. (It seems that the green strain looks good as we expect it to be linear in axial)
+			\item Initially horizontal : Stiffening due to tension
+			
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Further insight}
+	\begin{itemize}
+		\item A comment was made that E should have not been used for the two
+	\end{itemize}
 	\end{frame}
