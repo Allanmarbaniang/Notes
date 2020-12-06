@@ -73,6 +73,15 @@
 		\end{itemize}
 	\end{frame}
 
+	\begin{frame}
+		\begin{itemize}
+			\item Linearity : $\dfrac{PL}{K} = {\theta}$
+			\item Geometric nonlinearity only : $\dfrac{PL}{K} = \dfrac{\theta}{cos \theta}$
+			\item Material nonlinearity only : $\dfrac{PL}{K(\theta)} = {\theta}$ \footnote{We can say the spring stiffness as a material parameter K that also depends on $\theta$ introducing the material nonlinearity. For eg, we can model $K(\theta) = K_o(1-c\theta)$}
+			\item Geometric + Material nonlinearity : $\dfrac{PL}{K(\theta)} = \dfrac{\theta}{cos \theta}$
+		\end{itemize}
+	\end{frame}
+
 	\begin{frame}{Problem \#2}
 		\begin{figure}
 			\centering
@@ -191,7 +200,7 @@
 		\begin{itemize}
 			\item In defining the equilibrium (Froces = 0 , No moments). We will be defining the internal stress by different strain measures.
 			\item Remember that a proper constitutive law has to be taken for a particularly strain measure
-			\item Here we have chosen the Cauchy stress and E randomly. The cauchy stress is the actual/true stress in the deformed state. (Or it is the stress in the deformed state which is in equilibrium)
+			\item Here we have chosen the Cauchy stress and E randomly and not dependant on work compatibility. The cauchy stress is the actual/true stress in the deformed state. (Or it is the stress in the deformed state which is in equilibrium)
 			
 		\end{itemize}
 		\begin{block}{Using two strain measures}
@@ -275,6 +284,61 @@
 
 	\begin{frame}{Further insight}
 	\begin{itemize}
-		\item A comment was made that E should have not been used for the two
+		\item A comment was made that E should not have been used. 
+		\item The vertical stiffness $K_{Bx}$ is the chagne in equilibrium at B in direction x. $K_{Bx} =  \frac{dR}{dx}$. If F is constant then $\frac{dR}{dx} =  \frac{dT}{dx}$
+		\item Without the inclusion of the strain measures, internal force is $T(x) = \sigma a \frac{ x}{l} $. (All three are a function of x)
+		\item Since both strain measures are function of $l$ we can write $\sigma = f(l)$
+		\item Using the incompressibility codition \footnote{The condition states that volume cant change under deformation and so $al = AL$}, we can replace $a$ with $a =  \frac{V}{l}$, and using chain rule:
+		\begin{align*}
+			 \frac{dT}{dx} = \frac{d}{dx}\left(\dfrac{\sigma V x}{l^2} \right)=\frac{Vx}{l^2}\frac{\partial \sigma}{\partial l} \frac{\partial l}{\partial x} -\frac{2\sigma Vx}{l^3}\frac{\partial l}{\partial x } + \frac{\sigma V}{l^2} \\
+			  \frac{dT}{dx} = \frac{ax}{l}\frac{\partial \sigma}{\partial l} \frac{\partial l}{\partial x} -\frac{2\sigma ax}{l^2}\frac{\partial l}{\partial x } + \frac{\sigma a}{l}
+		\end{align*}
 	\end{itemize}
+	\end{frame}
+
+	\begin{frame}
+		\begin{align*}
+		\frac{dT}{dx} = \frac{ax}{l}\frac{\partial \sigma}{\partial l} \frac{\partial l}{\partial x} -\frac{2\sigma ax}{l^2}\frac{\partial l}{\partial x } + \frac{\sigma a}{l}
+		\end{align*}
+		\begin{block}{Stress gradient}
+			\begin{itemize}
+				\item So we need to find $\dfrac{\partial \sigma}{\partial l}$
+				
+				\item Green : $\left(\dfrac{\partial \sigma}{\partial l} \right)_G = E \dfrac{\partial \varepsilon_G}{\partial l} = E2l/2L^2 = \dfrac{El}{L^2}$
+				
+				\item Logarithmic : $\left(\dfrac{\partial \sigma}{\partial l} \right)_L = E \dfrac{\partial \varepsilon_L}{\partial l} = E \frac{d}{dl}\left(ln(l) - ln(L) \right) =  \dfrac{E}{l}$		
+			\end{itemize}
+		\end{block}
+		\begin{block}{l gradient}
+			\begin{itemize}
+				\item $l^2 = D^2 + x^2$	
+				\item $2l \dfrac{dl}{dx} = 2x$
+				\item $\dfrac{dl}{dx} = \dfrac{x}{l}$
+			\end{itemize}
+		\end{block}
+	\end{frame}
+
+	\begin{frame}{Stiffness}
+		\begin{block}{}
+			\begin{itemize}
+				\item $K_{Bx} =  \frac{dR}{dx} = \frac{dT}{dx}$
+				
+				\item Green : $K_{G} =  \dfrac{A}{L}\left(E - 2\sigma \dfrac{L^2}{l^2} \right)\dfrac{x^2}{l^2} + \dfrac{\sigma a}{l}$ \footnote{V = AL}
+				
+				\item  Logirthmic : $K_{L} =  \dfrac{a}{l}\left(E - 2\sigma \right)\dfrac{x^2}{l^2} + \dfrac{\sigma a}{l}$		
+			\end{itemize}
+		\end{block}
+	
+		\begin{itemize}
+			\item  They look similar but the causal consitutive relation chosen has led to the different results
+			
+			\item We can write $K_G$ as :
+			
+			\begin{align*}
+				K_{G} =  \dfrac{A}{L}\left(E - 2S \right)\dfrac{x^2}{l^2} + \dfrac{S A}{l}\\
+				\text{where}~S = \sigma \frac{L^2}{l^2}
+			\end{align*}
+			
+		\end{itemize}
+		 
 	\end{frame}
