@@ -16,14 +16,22 @@
 % Disable paragraph indentation, and increase gap
 \usepackage{parskip}
 
+%Matrix
+\usepackage{tabstackengine}
+\setstackEOL{;}% row separator
+\setstackTAB{,}% column separator
+\setstacktabbedgap{1ex}% inter-column gap
+\setstackgap{L}{1.0\normalbaselineskip}% inter-row baselineskip
+\let\mat\bracketMatrixstack
 
 \newcommand{\pth}{../Notes_figure/}
 \newcommand{\ve}[1]{\mathbf{#1}}
 
 \begin{document}
-%
-%\include{./math/main/math_main}
-\include{./structures/main/struct_main}
+
+\tableofcontents
+\include{./math/main/math_main}
+%\include{./structures/main/struct_main}
 
 
 %\bibliography{bibfile}

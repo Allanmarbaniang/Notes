@@ -1,0 +1,25 @@
+
+\section{Linearisation}
+
+\begin{frame}{Linearisation of system of equations}
+	\begin{itemize}
+		\item  In the directional derivative section, we have seen how we can linearise the potential energy or any function, functional
+		\item We get our equilibrium equation $\ve{Kx = F}$
+		\item This equation can be nonlinear with respect to $x$. So we have a residual function  $\ve{R(x)= Kx - F}$ which again can be thought as something that we can find the linear change
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\begin{itemize}
+		\item Suppose $R = \mat{{R_1(x_1~x_2)};R_2(x_1~x_2)}$ and $\ve{x} = \mat{x_1;x_2}$
+		\begin{align*}
+		\ve{R(x_{i+1}) \approx R(x_{i}) + D{R}{(x_k)}[u]} \\
+		D{\ve{R} }{(x_k)}[u]  = \frac{d}{d \epsilon} R(\ve{x_k} + \epsilon \ve{u})\\
+		= \frac{d}{d \epsilon}\mat{{R_1(x_1+ \epsilon u_1~x_2+   \epsilon u_2)};R_2(x_1+ \epsilon u_1~x_2+ \epsilon u_2)}\\
+		R(x_{i})= \ve{K_Tu}  \qquad Taking \quad \ve{R(x_{i+1}) = 0}
+		\end{align*}
+		\item Where $K_T$ is the tangent stiffness, and then we can find $\ve{u}$ until R is zero \footnote{$R_1(x+\epsilon u) = 2k(x_1+\epsilon u_1) - k(x_2+\epsilon u_2)$ and $R_2(x+u) =-k(x_1+\epsilon u_1) + k(x_2+\epsilon u_2) - F$ }
+		\item $K_T = \mat{2k,-k;-k,k}$ and $u = K_T^{-1}F$
+		
+	\end{itemize}
+\end{frame}

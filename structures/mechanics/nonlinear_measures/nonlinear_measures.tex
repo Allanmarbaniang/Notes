@@ -139,7 +139,7 @@
 	\end{frame}
 
 	\begin{frame}
-			\begin{figure}
+		\begin{figure}
 			\centering
 			\includegraphics[width=1\linewidth]{\pth/continuum/fig5}
 			\label{fig:fig1}
@@ -250,4 +250,44 @@
 		\item Notation for different configurations undeformed : x, and deformed : X
 		
 	\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Infinitesimal strain problem}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.4\linewidth]{\pth/continuum/fig6}
+			\label{fig:fig1}
+		\end{figure}
+		\begin{block}{}
+			\begin{itemize}
+				\item Suppose there is a rotation in any solid by 90 $^o$ , No deformation!. So:
+				\begin{align*}
+					u = -X - Y \\
+					v = X - Y 
+				\end{align*}
+				\item So our infinitesimal strains are :
+				\begin{align*}
+					\varepsilon_x = \varepsilon_y = -1 \\  \varepsilon_{xy} = 0
+				\end{align*}		
+				\item So we still get strain, when we should have not
+			\end{itemize}
+		\end{block}
+	\end{frame}
+
+	\begin{frame}{Other continuum strain measures}
+		\begin{itemize}
+			\item Using the same Green strain, we extend it in some way for 2D
+			\item Taking the differential length dS (Undeformed) and ds (Deformed)
+			\item Take a small element dX initially parallel to $x$ axis 			
+			\begin{align*}
+				ds^2 = \left(dX + \frac{\partial u}{\partial X} dX\right)^2 + \left(\frac{\partial v}{\partial X}dX \right)^2 \\				
+				E_{xx} = \frac{ds^2-dX^2}{2dX^2} = \frac{1}{2} \left(\left(1 + \frac{\partial u}{\partial X} \right)^2 + \left(\frac{\partial v}{\partial X} \right)^2\right) - 1 \\
+			\end{align*}
+			Similarly we get the Green strains equations :
+			
+			
+			\item Thse strain components = 0 for the rigid rotation case
+			\item Nonlinear strains are better, but they coincide with the infinitesimal strains when x and X are close to each other. \footnote{Here x and X are vectors that define the total position of a body in the deformed and undeformed}
+			
+		\end{itemize}
 	\end{frame}
