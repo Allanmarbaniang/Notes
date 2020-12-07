@@ -7,18 +7,95 @@
 \tableofcontents
 
 \section{Object}
-\begin{frame}{Object : dfsdfs}
+	\begin{frame}{Object}
+		\begin{itemize}
+			
+			\item Tensors are objects. An object is a some physical quantity that you can say exists in real life. Examples are forces, stresses etc.
+			
+			\item Each tensor has a co-ordinate frame where you can describe it. For eg : You would need to define a vector by how much it goes in unit basis directions like $e^1, e^2, e^3$. So we can say that a vector may be defined as (3,4,5) describing how we move in $e^1, e^2, e^3$ to represent the vector in the basis and so on. 
+		\end{itemize}
+	\end{frame}
+	
+\section{1st order tensors: Vectors}
+	\begin{frame}{Vectors}
+		\begin{itemize}
+			\item A vector can be representated by some components. These components are related with a basis.
+			\begin{equation}
+			   \ve{v} = v_i e_i 
+			\end{equation}
+			\item The basis is defined by the right hand rule
+			\item  Main operations in vectors are 
+				\begin{itemize}
+					\item Scalar product or the dot product
+					\item Cross product
+					\item Vector basis transformation
+					
+				\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Vectors: Dot product}
+		\begin{itemize}
+			\item The dot product is defined as such 
+			\begin{equation}
+			\begin{aligned}
+				\ve{v.u} = v_ie_i . u_je_j = v_iu_j~e_i.e_j = v_iu_i \delta_{ij} = v_iu_i \\ or \\
+				v = (v_1e_1 + v_2e_2 + v_3e_3)(u_1e_1 + u_2e_2 + u_3e_3)\\
+			\end{aligned}
+			\end{equation}
+
+			\item $e_1,e_2,e_3$ are orthogonal to each other therefore $\delta_{ij}  = 1,0$ 
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Vectors: Change of basis}
 	\begin{itemize}
+		\item As explained, every vector is a physical object but the way we define it depends on us.
+		\item The way a vector is defined is with respect to the components for any basis. For some basis $\ve{e^1, e^2, e^3}$, we can write as follows
+		\begin{align*}
+		\ve{v} = \mat{\ve{e_1~e_2~e_3}}\mat{v_1;v_2;v_3} 
+		\end{align*}
+		\item Therefore in some other basis the vector can be defined with different components as : 
+		\begin{align*}
+		\ve{v} =\mat{\ve{e'_1~e'_2~e'_3}}\mat{v'_1;v'_2;v'_3} = \ve{Q \mat{v'_1;v'_2;v'_3}}		
+		\end{align*}
+		\item Therefore $\mat{v'_1;v'_2;v'_3} = \ve{Q^{-1}}\mat{v_1;v_2;v_3}$
 		
-		\item Tensors are objects. An object is a some physical quantity that you can say exists in real life. Examples are forces, stresses etc.
-		
-		\item Each tensor has a co-ordinate frame where you can describe it. For eg : You would need to define a vector by how much it goes in unit basis directions like $e^1, e^2, e^3$. So we can say that a vector may be defined as (3,4,5) and so on. 
+ 
 	\end{itemize}
-\end{frame}
-
-\begin{frame}
-	sdfsdf
-\end{frame}
+	\end{frame}
 
 
+	\begin{frame}
+		\begin{itemize}
+			\item $\ve{Q}$ is the position of the new basis with respect to the old one. That's why we can operate $\ve{Q}$ on $\ve{v}$
+			\begin{equation}
+				\ve{Q} = \mat{e1.e1'~e1.e2'~e1.e3';e2.e1'~e2.e2'~e2.e3';e3.e1'~e3.e2'~e3.e3'}
+			\end{equation}
+			\item The first column, gives the location of e1 with respect to the old basis. As we can see it gives the direction cosines. And so on
+			\item If we do choose the new basis an orthogonal basis, we get $\ve{Q^{-1} = Q^T}$
+			\item $[v]' = \ve{Q^T}[v]$
+			\item $[v] = \ve{Q}[v]'$
+			\item $[]$ denotes that we are working with only the components, in basic matrix form
+		\end{itemize}
+	\end{frame}
 
+\section{2nd order tensors : (Many types of objects!)}
+
+	\begin{frame}
+		\begin{itemize}
+			\item A second order tensor can be a linear map from one vector to another vector
+			\item It can be a mapping that takes two vectors and gives a scalar			
+			\item But for now we'll focus mainly on the first thing
+		\end{itemize}
+	
+		\begin{block}{Linear map $\ve{S}$}
+			$\ve{v = Su}$
+		\end{block}
+	\end{frame}
+
+	\begin{frame}
+		content
+	\end{frame}
