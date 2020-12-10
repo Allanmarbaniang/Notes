@@ -155,6 +155,8 @@
 
 	\begin{frame}{Stress Objectivity}
 		\begin{itemize}
+			\item The idea is that the same stress should be the same as measured by different observers
+			\item The same problem is equivalent to if we applied a rigid body motion
 			\item So the stress tensor should not change it's property when there is a rigid body motion etc.
 			\item ???????????????? 
 			
@@ -210,7 +212,228 @@
 	\begin{frame}
 	\begin{itemize}
 		\item FEM is usually based in terms of a weak form of the differential equations
-		\item Let $\delta v$ denote an arbitary virtual velocity
-		
+		\item Let $\delta v$ denote an arbitrary virtual velocity
+		\item Virtual work, $\delta w$ per unit volume and time by a residual force $r$ during the virtual work as $r.\delta v$
+		\begin{equation}
+			\delta w = r.\delta v = 0
+		\end{equation}
+		\item The equation above is equivalent to the equation $r$ = 0 
+		\item  Since $\delta v$ is arbitary, we can get the seperate components of $\ve{r}$ if we take $\delta v = \mat{1,0,0}, \mat{0,1,0} , \mat{0,0,1}$
 	\end{itemize}
+	\begin{block}{}
+		The weak statement of static equilibrium of a body over it's volume is given then as
+		\begin{equation}
+			\delta W = \int_v  \left(DIV \sigma +f \right).\delta v dv  = 0
+		\end{equation}
+	\end{block}
+	\end{frame}
+
+
+	\begin{frame}{}
+		\begin{itemize}
+			\item $DIV\left(\sigma \delta v \right) = (DIV \sigma). \delta v + \sigma : \nabla \delta v$
+			\begin{equation}
+			\begin{aligned}
+			DIV(\sigma \delta v) = DIV
+			\left(\delta v_1\mat{\sigma_{11};\sigma_{21};\sigma_{31}} 
+			+ \delta v_2\mat{\sigma_{12};\sigma_{22};\sigma_{32}}
+			+ \delta v_3\mat{\sigma_{13};\sigma_{23};\sigma_{33}}\right)
+			\end{aligned}
+			\end{equation}
+			
+			\item We get the equilibrium therefore as :
+			\begin{equation}
+			\int_{\Gamma}\ve{ n.\sigma \delta v da - \int_v \sigma : \nabla \delta v dv + \int_v f.\delta v dv = 0 }
+			\end{equation}
+			\item Check Bonet page 143 for symmetric velocity defined equilibrium
+			$\delta W = \ve{\int_{v} \sigma : \delta d dv - \int_v f.\delta v dv }- \int_\Gamma \ve{t.\delta v da= 0} $			
+		\end{itemize}
+		
+	\end{frame}
+
+
+\section{Alternate stress definitions}
+
+	\begin{frame}{The kirchoff stress tensor}
+		Internal virtual work given as : 
+		$\delta W = \ve{\int_{v} \sigma : \delta d} dv$
+		\begin{itemize}
+			\item  Now $\sigma$ and $d$ are said to be work conjugate with respect to the current deformed volume. Product gives the work per unit current volume
+			\item If we defined the stress with respect to the undeformed(material ) coordinates, alternative work conjugete pairs are needed
+			\item The virtual work with respect to the intial volume and area by transforming the integrals is given as 
+			\begin{equation}
+			 \int_V J \sigma:\delta d~ dV = \int_V f_o. \delta v dV + \int_{\Gamma_o} t_o. \delta v dA
+			\end{equation}
+			where $f_0 = J~f$ and $t_o = t\frac{da}{dA}$ and  $\frac{da}{dA} = J \sqrt{N.C^{-1}N}$
+			
+			\begin{block}{}
+				The internal virtual work then expressed as the Kirchoff tensor  is
+				\begin{equation}
+				\delta W_{int} = \int_{V} \tau: \delta d dV
+				\end{equation}
+				where $\tau = J \sigma$, we can see that $\tau$ is work conjugate to the rate of the defomration tensor with respsect to the initial volume (Rember same work density per unit mass should be invariant or $\frac{1}{\rho} \sigma:d = \frac{1}{\rho_o}\tau:d$ [ J takes care of the density ])
+			\end{block}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{First-Piola kirchoff stress tensor}
+		The previous internal work definition still relied on the spatial (current configuration) quantities $\tau~ \text{and}~ d$ 
+		\begin{itemize}
+		\item 	Remember in the internal virtual work, the stress is conjugate with the gradient of the virtual displacements : $\int \sigma : \nabla \delta v dv = \int \sigma : \delta l dv$		
+		\item  Writing as 
+		\begin{equation}
+		\begin{aligned}
+		\int_V J \sigma :\delta l dv \\
+		\int_V J \sigma :(\delta \dot{F} F^{-1}) dV\\
+		\int_V J ~tr(\sigma (F^{-T}\delta \dot{F})) dV \\
+		\int_V J \sigma F^{-T}: \delta \dot{F} dV\\
+		\int_V P: \delta \dot{F} dV
+		\end{aligned}
+		\end{equation}
+		where P is the first Piola-Kirchhoff stress conjugate with the deformation rate
+		\end{itemize}
+
+	\end{frame}
+
+	\begin{frame}
+		\begin{itemize}
+		\item Unsymmetric two-point tensor with components 
+		\begin{equation}
+		\begin{aligned}
+		P = P_{iJ} \ve{e_i \otimes E_j}\\
+		P_{iJ} = J\sigma_{ik}(F^{-1})_{Jk}
+		\end{aligned}
+		\end{equation}				
+		\end{itemize}
+			
+	\begin{block}{}
+		Virtual work is then
+		\begin{equation}
+		\int_V P:\delta \dot{F} dV  \int_V f_o.\delta v dV + \int_{\Gamma} t_o.\delta v dA
+		\end{equation}
+		If we had reversed the virtual displacement to get the equilrium differential equations we get 
+		\begin{equation}
+		r_o = DIV P + f_o = Jr
+		\end{equation}
+		where DIV P is withre repect to the intial configuration given as DIV P = $\nabla_o P :I$ (Diagonal elemnts basically!)
+	\end{block}
+	\end{frame}
+
+
+	\begin{frame}{Insight}
+		\begin{itemize}
+			\item In the current configuration a force vector $dp$ acting on an element area $\ve{da = n.} da $
+			\begin{equation}
+				d\ve{p = t}da = \ve{\sigma} da
+			\end{equation}
+			\item The Cauchy stress gives the current force per unit deformed area 
+			\item Now d$\ve{p}$ can be written in erms of the undedformed area dA giving
+			\begin{equation}
+				d\ve{p = \sigma F^{-T}dA}J =P d\ve{A}
+			\end{equation}
+			so P relates an area vector in the intial configuration to a force vector in the current one
+		\end{itemize}
+	\end{frame}
+
+
+	
+	\begin{frame}{Second piola Kirchoff Stress tensor}
+		\begin{itemize}
+			\item Unsymmetric two-point tensor that is not at all related to the material (intial) configuration
+			\item We need to pull back the force from the spatial to material configuration $d\ve{p} \rightarrow d\ve{P}$
+			\begin{equation}
+				d\ve{P} = \phi^{-1}[d\ve{p}] =  F^{-1}d\ve{p}
+			\end{equation}
+			\item Now we define the second piola kirchoff as 
+			\begin{equation}
+			\begin{aligned}
+			d\ve{P = SdA} \\
+			\ve{F^{-1}\sigma da} = S \frac{1}{J} \ve{F^{T} da}  \\
+			S = J \ve{F^{-1}\sigma F^{-T}}
+			\end{aligned}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Work conjugate velocity}
+		\begin{itemize}
+			\item The spatial virtual rate of deformation
+			is related to the material as
+			\begin{equation}
+				\delta d = F^{-T} \delta \dot{E} F^{-1}
+			\end{equation}
+			\item Keeping it in the internal virtual work
+			\begin{equation}
+			\begin{aligned}
+			\delta W_{int} = \int_v \sigma : d dv\\
+			\int_V J\sigma : d dV \\
+			\int_V J\sigma : F^{-T} \delta \dot{E} F^{-1} dV \\
+			\int_V J \text{tr}(\sigma  (F^{-T} \delta \dot{E} F^{-1})^T) dV \\
+			\int_V J \text{tr}(\sigma  F^{-T} \delta \dot{E} F^{-1}) dV  = \int_V J \text{tr}(\sigma  F^{-1} \delta \dot{E} F^{-T}) dV  \quad  [\text{tr(ABCD) = tr(DABC)}] \\
+			=\int_V S:\delta \dot{E} dV
+			\end{aligned}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item Threfore S is work conjugate to $ \dot{E}$ and we have to total material description
+			\begin{block}{}
+				\begin{equation}
+					\int_V S:\delta \dot{E} dV = \int_V f_o.\delta v dV + \int_{\Gamma_o} t_o.\delta v dA
+				\end{equation}
+			\end{block}
+			We get then the relation ship between the two piola stresses and cauchy stress
+			\begin{block}{}
+				\begin{equation}
+					\begin{aligned}
+					\sigma = J^{-1}PF^T \\
+					\sigma = J^{-1}FSF^T
+					\end{aligned}
+				\end{equation}
+			\end{block}
+			And we also get push forward and pull back operations 
+			\begin{itemize}
+				\item $S = J \phi_*^{-1}[\sigma]$
+				\item $\sigma = J^{-1} \phi_* [S]$
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Insight}
+		\begin{itemize}
+			\item In case of rigid body motion, the polar decomposition of the defomration gradient gives F = R and J = 1
+			\item S =  $\ve{R^TQR}$
+			\item Second piola kirchoff components coincide  with the Cauchy components given in a different basis rotated by R!!
+			\item S is also objective and independant from reimposed rotations $Q$
+			\item Check bonet Page 151 for biot stress
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Deviatoric and pressure/hydrostatic components}
+		\begin{itemize}
+			\item It is practical to decompose the stress tensor to its deviatoric and pressure components
+			\item This is useful as both these tensors play a different role in failure theory
+			\item $\ve{\sigma = \sigma_D + \sigma_H }$
+			whre p = 1/3 tr($\sigma$) and tr($\sigma_D = 0$)
+			\item Also we can do 
+			\begin{equation}
+			\begin{aligned}
+			P = P_D + pJF^{-T} \quad P_D =J \sigma_D F^{-T} \\ 
+			S = S_D + pJC^{-T} \quad S_D =J F^{-1}\sigma_D F^{-T} \\ 
+			\end{aligned}
+			\end{equation}
+			where trace of $S_D ~\text{and}~ P_D$ need not be zero
+			\item Check Bonet page 151 for other relations
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Stress Rates}
+		Check Bonet Page 152
 	\end{frame}
