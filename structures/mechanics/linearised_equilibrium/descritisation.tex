@@ -35,9 +35,9 @@
 			\end{equation}
 			$F = \mat{\frac{\partial x_1}{\partial X_1},\frac{\partial x_1}{\partial X_2},\frac{\partial x_1}{\partial X_3} ; , , ;
 					  \frac{\partial x_2}{\partial X_1},\frac{\partial x_2}{\partial X_2},\frac{\partial x_2}{\partial X_3}; , , ;
-				  	  \frac{\partial x_3}{\partial X_1},\frac{\partial x_3}{\partial X_2},\frac{\partial* x_3}{\partial X_3}}$
-			\qquad $\ve{x = N_ax_a}$ , so $\ve{\mat{x_1;x_2;x_3} = N_a\mat{x_{i_1};x_{i_2} ;x_{i_3} }}$ 			\\ and $\frac{\partial x_1}{\partial X_1} =  \frac{\partial N_a x_{i_1}}{\partial X_1}$
-			\item $F_{iJ} = \sum_{a}^{n} x_{a,i} \frac{\partial N_a}{\partial X_J}$
+				  	  \frac{\partial x_3}{\partial X_1},\frac{\partial x_3}{\partial X_2},\frac{\partial x_3}{\partial X_3}}$
+			\qquad $\ve{x = N_ax_a}$ , so $\ve{\mat{x_1;x_2;x_3} = N_a\mat{x_{a_1};x_{a_2} ;x_{a_3} }}$ 			\\ and $\frac{\partial x_1}{\partial X_1} =  \frac{\partial N_a x_{a_1}}{\partial X_1}$
+			\item $F_{iJ} = \sum_{a}^{n} x_{a,i} \frac{\partial N_a}{\partial X_J} \quad$ $i$ is the component of the deflection given as descritised, and j is the component of the deformed geometry. AGAIN descritised! 
 			\item where $\nabla_o N_a = \frac{\partial N_a}{\partial \ve{X}}$ 
 			\item We can relate it to $\nabla_{\xi} N_a = \frac{\partial N_a}{\partial \ve{\xi}}$ using chain rule as\\
 			$\frac{\partial N_a}{\partial \ve{X}} = \left(\frac{\partial X}{\partial \ve{\xi}} \right)^{-T}\frac{\partial N_a}{\partial \ve{\xi}}$ \qquad ($\frac{\partial N}{\partial \xi} = \frac{\partial N}{\partial \ve{X}}\frac{\partial \ve{X}}{\partial \xi}$) \qquad ($\frac{\partial N_1}{\partial \xi_1} = \frac{\partial N_1}{\partial X_1}\frac{\partial X_1}{\partial \xi_1} + \frac{\partial N_1}{\partial X_3}\frac{\partial X_3}{\partial \xi_1}+ \frac{\partial N_1}{\partial X_2}\frac{\partial X_2}{\partial \xi_1}$) \\ 
@@ -127,26 +127,26 @@
 				\delta W(\phi,\delta v) = \int_v \sigma : \delta d dv - \int_v f. \delta v dv - \int_{\Gamma} t. \delta v da
 			\end{equation}
 			which is the virtual work done by the residual $\ve{r}$. \\
-			A pretty neat thing is that we can consider a single virtual nodal velocity $\delta v_a$ occuring at node $a$ in element $e$. 
+			A pretty neat thing is that we can consider a single virtual nodal velocity $\delta v_a$ occuring at node $a$ in element $e$. We will assemble the elements later but the velocity at the node will be consistent.
 			\begin{equation}
 			\delta W^e(\phi,N_a\delta v_a) =  \int_{v^e} \ve{\sigma} : (\delta v_a \otimes \nabla N_a) dv - \int_{v^e} f. (N_a \delta v_a) dv - \int_{\Gamma^e} t. (N_a \delta v_a)da
 			\end{equation}
-			* The first term because $\sigma$ is symmetric so the 1/2 and all disappears\\
-			But what about nodal connectivities! ??
+			* Very interesting, this gives us the equilibrium at a node $a$. The $\nabla N_a$ almost acts like a component term  \\
+			* The first term because $\sigma$ is symmetric so the 1/2 in velocity gradient disappears\\
 		\end{block}
 	
 		Insight :
 		\begin{equation}
 			\begin{aligned}
 			d = \frac{1}{2}\left(l  + l^T \right) = \frac{1}{2}\left(\nabla v + (\nabla v)^T \right) \\
-			\nabla v = n_a \otimes \nabla N_a 
+			\nabla v = n_a \otimes \nabla N_a \text{CHECK????}
 			\end{aligned}
 		\end{equation}
 	\end{frame}
 
 
 	\begin{frame}
-		We know that $\ve{\sigma :(u \otimes v) = u. \sigma v}$ for any vectors $\ve{v,u}$
+		We know that $\ve{\sigma :(u \otimes v) = u. \sigma v}$ for any vectors $\ve{v,u}$. Almost like when you take a scalar product and you only want the diagonals added
 		
 		So we get 
 		\begin{equation}
@@ -158,8 +158,9 @@
 		\begin{itemize}
 			\item So per element the virtual work is expressed in terms of the internal and external nodal forces $\ve{T_a^e}$ and $\ve{F_a^e}$
 			\item $ \delta W^e(\phi,N_a\delta v_a) = \ve{\delta v.(T_a^e-F_a^e)}$ \\
-			$\ve{T_a^e} ~\text{is the internal force with }, T_{a,i}^e = \sum_{j}^{3} \int_{v^e} \sigma_{ij}\frac{\partial N_a}{\partial x_j} dv$ ($\sigma \nabla N_a$ is a linear map where $\nabla N_a$ is a vector)	
+			$\ve{T_a^e} ~\text{is the internal force with different components }, T_{a,i}^e = \sum_{j}^{3} \int_{v^e} \sigma_{ij}\frac{\partial N_a}{\partial x_j} dv$ ($\sigma \nabla N_a$ is a linear map where $\nabla N_a$ is a vector, but with respect to the global directions!. But it's not a unit vector)	
 			\item The cauchy stress is found from the constitutive relationship and the left cauchy tensor	
+			\item The virtual work allows you to say that the components of the inernal forces will be zero
 		\end{itemize}
 	\end{frame}
 
@@ -180,7 +181,7 @@
  		Equilibrium at a global level :
  		\begin{itemize}
  			\item From all elements e (1 to $m_1$) containing node $a$ \\
- 			$\delta W(\phi,N_a \delta v) = \sum_{e=1,e \ni a}^{max} \delta W^e(\phi,N_a \delta \ve{v_a}) = \delta \ve{v_a . (T_a-F_a)}$ 	
+ 			$\delta W(\phi,N_a \delta v) = \sum_{e=1,e \ni a}^{m_a} \delta W^e(\phi,N_a \delta \ve{v_a}) = \delta \ve{v_a . (T_a-F_a)}$ 	
  			\item where assembled equivalent nodal forces are:		
  			$\ve{T_a =\sum_{e=1,e \ni a}^{m} T_a^e \qquad F_a =\sum_{e=1,e \ni a}^{m} F_a^e  }$
  			\item And then for all nodes we get
@@ -245,7 +246,16 @@
  			 = \delta v_a.D(T_a^e - F_a^e)[N_bu_b] = \delta v_a.K^e_{ab}u_b
  			\end{equation}
  			\item Change in force at node $a$ due to change in current position of node $b$
- 			\item This is not the full stiffness matrix, but each component. When we do the whole thing we get the full linear map 
+ 			\item This is not the full stiffness matrix, but each component. When we do the whole assembly, we get the full tangen stiffness matrix
+ 			
+ 			\begin{equation}
+ 				\frac{\partial \ve{R}}{\partial \ve{U}} = \mat{\frac{\partial R_1}{\partial u_1},\frac{\partial R_1}{\partial u_2},.....,\frac{\partial R_1}{\partial u_n};
+ 					 , , , ;
+ 				\frac{\partial R_2}{\partial u_1},\frac{\partial R_2}{\partial u_2},.....,\frac{\partial R_2}{\partial u_n};
+ 				 , , , ;
+	 			\frac{\partial R_n}{\partial u_1},\frac{\partial R_n}{\partial u_2},.....,\frac{\partial R_n}{\partial u_n}}
+ 			\end{equation}
+ 			So one component here is attained by finding the linearisation in one direction node with the virtual work equilibrium in another node seperately
  		\end{itemize}
  	\end{frame}
  
@@ -259,7 +269,62 @@
  			\end{equation}
  			\item where
  			\begin{equation}
- 			[K_{c,ab}]_{jk} = \int_{v^e} \sum_{k,l=1}^{3} \frac{\partial N_a}{\partial x_k} Cikjl \frac{\partial N_b}{\partial x_l} dv \qquad i,j = 1,2,3
+ 			[K_{c,ab}]_{ij} = \int_{v^e} \sum_{k,l=1}^{3} \frac{\partial N_a}{\partial x_k} Cikjl \frac{\partial N_b}{\partial x_l} dv \qquad i,j = 1,2,3
  			\end{equation}
+ 		\end{itemize}
+ 	\end{frame}
+ 
+ 
+ 	\begin{frame}{Problem \#3 : Find tangent stifness components between node 2 and 3}
+		\begin{figure}
+ 			\centering
+ 			\includegraphics[width=0.45\linewidth]{\pth/continuum/fig12} 	\includegraphics[width=0.5\linewidth]{\pth/continuum/fig13}
+ 		\end{figure}
+ 	
+ 		{\tiny
+		\begin{equation}
+		 	\begin{aligned}
+		 	\frac{\partial N_1}{\partial \ve{x}} = \frac{1}{24}\mat{3,0;-4,4}\mat{-1;-1} = \frac{-1}{24}\mat{3;0} \qquad 	\frac{\partial N_2}{\partial \ve{x}}  = \frac{1}{24}\mat{3;-4} \qquad \frac{\partial N_3}{\partial \ve{x}}  = \frac{1}{24}\mat{0;4}
+	 	\end{aligned}
+ 		\end{equation}}
+ 	
+ 	$K_{11}$ means equilibrium in 2 due to change in 3
+ 	\end{frame}
+ 
+ 
+ 	\begin{frame}{Constitutive component:Matrix form}
+ 		\begin{itemize}
+ 			\item Virtual work for element $e$ expressed in matrix notation by a small starin vector as 
+ 			$\varepsilon' = [\varepsilon_{11},\varepsilon_{22},\varepsilon_{33},2\varepsilon_{12},2\varepsilon_{13},2\varepsilon_{23}]^T$
+ 			\item $\varepsilon' = B_au_a$
+ 			\item Now the constitutive component of the linearised virtual work can be written as
+ 			\begin{equation}
+ 			D\delta W_C(\phi,\delta v)[u] = \int_V \delta d :c:\varepsilon dv = \int_v \delta \ve{d^TD\varepsilon}' dv
+ 			\end{equation}
+ 			\item Where the later part is the matrix componets received from the tensor contraction
+ 			\begin{equation}
+ 				D = \mat{c_{1111},c_{1122},c_{1133},c_{1112},c_{1113},c_{1123};
+ 						 c_{2211},c_{2222},c_{2233},c_{2212},c_{2213},c_{2223};
+ 						 .,.,.,.,.,.;
+ 					     c_{2311},c_{2322},c_{2333},c_{2312},c_{2313},c_{2323}}
+ 			\end{equation}
+ 			\item See bonet page 250 for neo-Hookean model
+ 			\item For node a and b
+ 			\begin{equation}
+ 				D\delta W_c^e(\phi,N_a\delta v_a)[N_b u_b] = \int_{v^e} \ve{(B_a \delta v_a)^TD(B_b u_b)} dv =  \underset{Tangent~ K}{\int_{v^e} \ve{\delta v_a.(B_a ^TDB_b ).u_b} dv}
+ 			\end{equation}
+ 		\end{itemize}
+ 	\end{frame}
+ 
+ 
+ 	\begin{frame}{Initial stress component}
+ 		\begin{itemize}
+ 			\item Remember that the gradients of $u$ and $\delta v$ can be found as
+ 			\begin{equation}
+ 				\begin{aligned}
+ 				content
+ 				\end{aligned}
+ 			\end{equation}
+ 			
  		\end{itemize}
  	\end{frame}
