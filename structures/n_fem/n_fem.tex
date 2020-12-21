@@ -1,0 +1,801 @@
+
+
+% Title
+\title{N-Fem}
+\author{Allan Marbaniang}
+\date{Updated : Dec 18 2020}
+\maketitle
+
+
+
+\input{./structures/n_fem/fem_review/fem_review}
+
+
+\section{Introduction}
+
+	\begin{frame}
+		\begin{itemize}
+			\item If a response is a function of space and time, we need to move in space and time.
+			\item Partial discretisation, where the differential equation at each node is now already discretised by space and only dependant on time. FDM will do this at a  point where at each point we have a differential equation that is now numerically defined
+			\item $\hat{f}(x,t) \approx f(x,t)$
+			\item There are methods developed that are dependant on \\
+			 Minimisation Error  = $\hat{f}(x,t) - f(x,t)$ \\
+			 \item We can also minimise the differential equation \\
+			  $k \frac{\partial^2 \hat{f}}{\partial^2 x} - f(x) = R(x) $\\
+			 $\int_{x_a^e} W(x)R(x) dx = 0$
+			
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Weighted residual method}
+		\begin{itemize}
+			\item Galerkin : Babnov, Petrov
+			\item Before dynamics, if we go for statics (Steady state) without partial descritisation
+			\item So we can	$\int_{x_a}^{x_b} W(x)R(x) dx = 0$ \\
+			It forces the function to be averagely zero. So some nodes will satisfy it exactly!!\\
+				$\int_{x_a}^{x_b} W(x).\left(k \frac{\partial^2 \hat{f}}{\partial x^2} - f(x)  \right) dx = 0$ \\
+			\item I will have to assume however the function $\hat{f(x)}$. Easy to take polynomials, but the order should not vanish.  Minimum requirement, but can we reduce this need of order??
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item So we can keep the function like this :
+			\begin{equation}   
+			\int_{x_a}^{x_b} W(x).k \frac{\partial^2 \hat{f}}{\partial x^2} dx- \int_{x_a}^{x_b} W(x).f(x) - dx = 0
+			\end{equation}
+			\item And using integration by parts we get \\
+			$	\left|\left(W(x).k \frac{\partial \hat{f}}{\partial x} \right) \right|^{x_b}_{x_a}- \int_{x_a}^{x_b} \frac{dW(x)}{dx}.k \frac{\partial \hat{f}}{\partial x} dx -  \int_{x_a}^{x_b} W(x).f(x) - dx = 0$
+			\item Note we have reduce the order, and we also get the boundary term. (The flux that we describe at the end). And we have a weak weighted residual statement.
+			\item It is an integral steatement. Not point based in FDM.  
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item Choosing weight :
+				\begin{itemize}
+					\item Any function : Petrov-Galerkin
+					\item Shape function : Bubnov - Galerkin
+				\end{itemize}
+			\item  Suppose we have actual $f(x)$ and approxx $\hat{f(x)} = a_0 + a_1x$. Knowing the boundary conditions at x =$x_a$ and x = $x_b$, where $\hat{f}= f_a$ and $\hat{f}=f_b$
+			\item We get $\hat{f(x)} = \frac{x_b-x}{x_b-x_a} f_a + \frac{x - x_a}{x_b-x_a} f_b$, which are shape linear functions. Where we get the boundary values if we keep x at boundary. \\
+			\begin{equation}
+				\hat{f(x)} = N_1(x) f_a + N_2(x)f_b
+			\end{equation}
+			given by Ritz, Ritz approximation which gives us a way how to choose $\hat{f(x)}$
+			\item Petrov : $W_i = N_i$ and suppose $\hat{f(x)} = \sum_{1}^{3} N_i(x)f_i$ \\
+			Weak form \\
+			$\left|\left(W(x).k \frac{\partial \hat{f}}{\partial x} \right) \right|^{x_b}_{x_a}- \int_{x_a}^{x_b} \frac{dW(x)}{dx}.k \frac{\partial \hat{f}}{\partial x} dx -  \int_{x_a}^{x_b} W(x).f(x) - dx = 0$ \\
+			$B.T - \int_{x_a}^{x_b} \frac{dN_i}{dx}.k \frac{\partial }{\partial x}(N_1f_1 + N_2f_2+N_3f_3) dx -  \int_{x_a}^{x_b} N_i.f(x) - dx = 0$ \\
+			
+			Weight gives equation at each node. 
+			Only is differentiation in partial. 
+			\item If we keep the unkown boundary terms as a vector we get
+			\begin{equation}
+			\ve{0 = B.T - Kf - P}
+			\end{equation} 
+			where $K_{ij} = \int_{x_a}^{x_b} \frac{dN_i}{dx}.k \frac{\partial N_j }{\partial x} dx$
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item FDM writes at every node. Here we minimise the governing differential in the domain (Integral ). The weak form is valid over the entire domain. And now we write the equation at some points dependant on the approx funciton.
+			\item For a three parameter approximation
+			\begin{equation}
+			\mat{0-BT;0-BT;0-BT} = -\mat{K_{11},K_{12},K_{13}; K_{11},K_{12},K_{13};K_{21},K_{22},K_{23}; K_{31},K_{32},K_{33} }\mat{u_1;u_2;u_3} - \mat{p_1;p_2;p_3}
+			\end{equation}
+			where $K_{ij} = \int_{x_a}^{x_b} \frac{dN_i}{dx}.k \frac{\partial N_j }{\partial x} dx$ an $p_i = \int_{x_a}^{x_b} N_if(x)dx$
+			\item $\ve{Kd = (BT-p) = F}$ which is the descretised form. 
+			\item Differential system $\rightarrow$ Alegebric system
+			\item We can take N as picewise also (T.Kant)
+			\item B.T will disappear so for a three noded we get :
+				\begin{equation}
+			\mat{K_{11},K_{12},K_{13}; K_{11},K_{12},K_{13};K_{21},K_{22},K_{23}; K_{31},K_{32},K_{33} }\mat{u_1;u_2;u_3} =\mat{BT-0;0;BT-0} + \mat{p_1;p_2;p_3} 
+			\end{equation}	
+			B.T = $(W.k\frac{d u}{dx})|^{x_2}_{x_1}$, once u is known at boundary and prescribed, the weight will be zero. Weight is given only at points where we don't know
+	\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item Any  gerneral function can be approximated by linear terms in a smaller domain, while in a larger domain the function is more complicated.
+			\item This is an integral method so we can always decretise it
+			\begin{equation}
+			0=\int_{x_a}^{x_b} W(x)R(x)dx = \sum_{e=1}^{n} \int_{x_a^e}^{x_b^e} W^e(x)R^e(x)dx
+			\end{equation}
+			\item Now so this is the concept of finite element method form of weighted residual method
+			\begin{itemize}
+				\item Continuity of the field variables must be maintained
+				\item So we can do the computation only on one element
+				
+			\end{itemize}
+			\item Boundary volume method : Only at the boundary (Dimension less)
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}
+		\begin{itemize}
+		\item Again when we keep the full term we get
+		\begin{equation}
+			\begin{aligned}
+		     	\left|\left(W(x).k \frac{\partial \hat{f}}{\partial x} \right) \right|^{x_b}_{x_a}- \int_{x_a}^{x_b} \frac{dW(x)}{dx}.k \frac{\partial \hat{f}}{\partial x} dx -  \int_{x_a}^{x_b} W(x).f(x) - dx = 0 \\
+			\end{aligned}
+		\end{equation}			
+		\item In the interior nodes of a 2 element discretisation of 2 noded element, the boundary term from element 1 becomes $BT_{x_2}-BT_{x_1}$ and from element 2 becomes $BT_{x_3}-BT_{x_ 2}$
+		\item As we Join node 2, we will get at node x2 that the boundary terms will cancel each other.
+		\item The way I like to look at this is that the B.T. is the internal force from each element and corresponding face. Each element will give a boundary term pointing corresponding to the face.
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item 	So in descritised form for a 2 noded element we get :
+			\begin{equation}
+			\mat{K_{11},K_{12}; K_{21},K_{22} }\mat{u_1;u_2} = \mat{BT_1;BT_2} +\mat{p_1;p_2} 
+			\end{equation}	
+			where $K_{ij} =  \int_{x_a^e}^{x_b^e}\frac{\partial N^e_i}{\partial x} k\frac{\partial N^e_j}{\partial x} dx$ \\ 
+			$p_i^e = \int_{x_a^e}^{x_b^e}N_i^e f(x)dx$
+			\item And then we can write the equations for each element, and rearange the dof as global dof in the same vector and we get our global matrix!	
+			\item The advantage is always that all the integrals are done in the sub domain
+	\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item With the local weighted residual method, we can discretise it into simpler domains etc.
+			\item Second order - Axial. Bending is forth order, (If we do second order, then two equations with two unkowns)
+			\item Axial rod subjected to axial deformation
+			\begin{equation}
+			\begin{aligned}
+			EA \frac{\partial^2 u}{\partial x^2} = p(x)\\
+			EI \frac{\partial^4 u}{\partial x^4} = p(x)  (Bending)			
+			\end{aligned}
+			\end{equation}		
+			with boundary conditions. 
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Quasi harmonic equation :Poissons problem}
+		\begin{itemize}
+			\item Unkown per node is 1, but varies over x and y
+			\item $\frac{\partial }{\partial x} \left(k_x\frac{\partial \phi}{\partial x} \right) + \frac{\partial }{\partial y} \left(k_y\frac{\partial \phi}{\partial y} \right) + p(x,y) = 0$ 
+			\item Mixed boundary conditions 
+			\begin{itemize}
+				\item Dritchlet : $\phi = \hat{\phi}$ in some boundary
+				\item General Newman :$k_x\frac{\partial \phi}{\partial x} L_x  + k_y\frac{\partial \phi}{\partial y} _y + q + \alpha(\phi - \phi_a) = 0$ : In some portion of the boundary 		
+				\item For isotropic material 
+				\begin{equation}
+				k \frac{\partial \phi}{\partial n} + q + \alpha(\phi - \phi_a)
+				\end{equation}		
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.7\linewidth]{../Notes_figure/nfem/fig7}
+		\end{figure}
+	\end{frame}
+
+
+	
+	\begin{frame}
+		\begin{itemize}
+			\item So $R(x,y) = k \frac{\partial^2 \phi}{\partial x^2} + k \frac{\partial^2 \phi}{\partial y^2} + p$
+			\item Global error  =  $\sum_{e=1}^N  \int_{\Omega_e}local$
+			\item WRM 
+			\begin{equation}
+				\int \int_{\Omega} W   \left( k \frac{\partial^2 \phi}{\partial x^2} + k \frac{\partial^2 \phi}{\partial y^2} + p \right) dx dy = 0  \qquad( Strong statement)
+			\end{equation}
+			\item Greens theorem : 
+			\begin{equation}
+				\int \int_A \left( \frac{\partial C}{\partial x} \frac{\partial D}{\partial x} - C \frac{\partial^2 D}{\partial x^2} \right) dA =  \int_S C \frac{\partial  D}{\partial x} L_x ds
+			\end{equation}
+			So we use this we get :
+			\begin{equation}
+				\int \int_A C \frac{\partial^2 D}{\partial x^2}  dA =  
+				\int \int_A \frac{\partial C}{\partial x} \frac{\partial D}{\partial x} - 
+				\int_S C \frac{\partial  D}{\partial x} L_x ds
+			\end{equation}
+			The first term is like $W(k \frac{\partial^2 \phi}{\partial x^2})$
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item $\int \int_A  \frac{\partial W}{\partial x} k\frac{\partial \hat{\phi}}{\partial x} dA - \int_S W.k \frac{\partial \hat{\phi}}{\partial x} L_x ds + \int \int_A  \frac{\partial W}{\partial y} k\frac{\partial \hat{\phi}}{\partial y} dA - \int_S W.k \frac{\partial \hat{\phi}}{\partial y} L_y ds + \int \int W p dA = 0 $ (Weak statement)
+			\item Where $L_x$ is direction cosine of s with respect to x
+			\item $\hat{\phi} = \sum_{i=1}^{n}N_i(x,y)\phi_i$ (Ritz, bubonov)
+			\item For $j^{th}$ node \\             $\int\int _A \frac{\partial N_j}{\partial x} k \frac{\partial \sum_{i=1}^{n} N_i \phi_i}{\partial x} dA - \int_S N_j k \frac{\partial \sum_{i=1}^{n} N_i \phi_i}{\partial x} L_x ds +
+			\int\int _A \frac{\partial N_j}{\partial y} k \frac{\partial \sum_{i=1}^{n} N_i \phi_i}{\partial y} dA - \int_S N_j k \frac{\partial \sum_{i=1}^{n} N_i \phi_i}{\partial y} L_y ds + \int \int_A N_j p dA= 0 $
+			\item So $K_{ij} = \int\int_A k \left( \frac{\partial N_i}{\partial x}\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}\frac{\partial N_j}{\partial y}\right)dA$
+			\item $\ve{K  d= P + X_i (Direct)+ Newman } = F$	
+	\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}{Triangular element}
+		\begin{itemize}
+			\item Anticlockwise noded. Each node has (x,y)
+			\item $\hat{\phi} = N_1(x,y)\phi_1+N_2(x,y)\phi_2+N_3(x,y)\phi_3$
+			\item Let $\hat{\phi} = a + bx + cy$ (Three unknowns, you need three for a plane)
+			\item $\mat{\phi_1;\phi_2;\phi_3} = \mat{1,x_1,y_1;1,x_2,y_2;1,y_2,y_3} \mat{a;b;c}$
+			\item Then we can find the shape functions
+			\item Then we can find the element! Stress and strain is constant
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}{Quasi Harmonic problem}
+		\begin{itemize}
+			\item In plane deformation : Plane stress, plane strain, axisymmetric
+			\item Integration over the triangle domain (area) poses problems
+			\item Then they developed area coordinates, which is the area sections that they develop for the shape functions $L_i = N_i$. Some area integration based on these area coordinates.
+			\item The stiffness is constant, and area can be formed while the force can be found
+			
+		\end{itemize}
+	\end{frame}
+ 
+
+
+	\begin{frame}
+		The steps of a finite element method are
+		\begin{itemize}
+			\item Divide the whole domain ino finite parts
+			\item For each element develop relations between pairs of dual variables (primary and secondary, eg forces and displacements)
+			\item Assemle elements together to get the replationship of the variables for the whole system	
+		\end{itemize}
+		We are going to look at second differential equations and how to solve them using fem
+	\end{frame}
+
+
+	\begin{frame}{Example of primary and secondary variables}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.5\linewidth]{\pth/nfem/fig2} 
+		\end{figure}
+	\end{frame}
+
+
+	\begin{frame}{One-D Problem}
+		\begin{itemize}
+			\item Consider the equation
+			\begin{equation}
+				-\frac{d}{dx}\left(a \frac{u}{x} \right) + cu =  f \qquad for \qquad 0<x<L
+			\end{equation}
+			\item where $a = a(x), c = c(x), f = f(x)$ are the known quantities and $u(x)$ has to be found		
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{FEM approximation}
+		\begin{itemize}
+			\item The domain $\Omega = (0,L)$ is descritised into a set of intervals with $\Omega^e = (x_a^e,x_b^e)$ which denotes the end of the element 
+			\item  The length of an element $h_e =x_b^e- x_a^e$
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.7\linewidth]{\pth/nfem/fig1} 
+			\end{figure}
+			\item We find an approx solution over each element $\Omega^e$ and then we assemble it all together
+			\begin{equation}
+			u(x) \approx u_h^e(x) = \sum_{j}^{n}c^e_jN_j^e
+			\end{equation}
+			where we choose the shape functions and then have to find the coefficients such that oour approx solution is like the real one
+			\item Since there are n unkown parameters (For each dof), we need n linearly independant equations
+
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}{Discretised DE equation}
+		\begin{itemize}
+			\item Keeping the discretised DE equation we get 
+				\begin{equation}
+					-\frac{d}{dx}\left(a \frac{u_h^e}{x} \right) + cu_h^e -f(x) =  R^e(x,c_1^e,c_2^e,c_3^e,...,c_n^e) \neq 0  
+				\end{equation}
+			What we want to do is find the coefficients such that the residual is zero. This is again equilibirum at a point!
+			\item One way to make it zero is to set the weighted integral of the residual zero
+				\begin{equation}
+					\int_{x_a^e}^{x_b^e} w_i^e(x)R^e(x,c_1^e,c_2^e,c_3^e,...,c_n^e)  dx = 0 \qquad i = 1,2,...,n
+				\end{equation}
+			\item where $w_i^e$ are different weight functions giving us n equations for the coefficien parameters ($c_1^e,c_2^e,c_3^e,...,c_n^e$)
+			\item Now the weights however shoul all be independent and invertible. If we took w = 1, we would have only one equation
+			\item These weights feel like the variation, but in the variation we choose also that the variations are the same function like the shape functions hmmmm.
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item If we choose $w^e_i$ to be the shape functions. We get the Galerkin method. Which is exactly the same as the virtual work where $\delta v = \sum_{i}\delta v_i N_i$ where you can say then that $\delta v_i$ is 1, since the virtual disp magnitude comes out anyways
+			\item Since the residual $R_e$ has the same order derivatives of the dependant unkonw u(x), we need at least quadratic representation of $u_h^e(x)$
+			\item To reduce or weaken the differentiability of the shape functions (node disp are constant) , we distribute the order between the weights and $u_h^e$ 
+			\begin{block}{}
+				This is the weak form : Reducing the order of the dependant variable to the weight to make the order of the variable leser
+			\end{block}
+			\item The weights kind of give different component equilib equations
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Note}
+		\begin{itemize}
+			\item Note that in usual structural mechanics we derive the virtual work equation from a potentional functional. Most fem methodsa re based on an element wise application of the Ritz method
+			\item The virtual displacement is an integral statement which is he same as the integral weak form found frm the governing differential equations. 
+			\item But differential equations are easy to form, and most fem methods are based on de
+			
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Derivation of the weak form}
+		\begin{itemize}
+			\item After getting the weighted residual statement, the next job is to weaken the  differentiability of $u_h^e$. To make both the orders of $u_h^e$ and $w_i^e$ the same
+			\item The steps are 
+			\begin{itemize}
+				\item Write weighted residual statement
+					\begin{equation}
+						0 = \int_{x_a^e}^{x_b^e} \left[w_i^e\left(-\frac{d}{dx}\left(a \frac{u_h^e}{x} \right) + cu_h^e -f(x) \right) \right] dx
+					\end{equation}
+					We are taking the summation of the weighted residual over the whole element and saying that it is zero. The weight sort of gets the components
+				\item Weakening the form using integration by parts
+				\begin{equation}
+					\begin{aligned}
+					(uv)' = uv' + u'v \\
+					\int_{a}^{b} uv' = uv|^b_a - \int_{a}^{b} u'v \\
+					0 = \int_{x_a^e}^{x_b^e} \left[w_i^e\left(-\frac{d}{dx}\left(a \frac{u_h^e}{x} \right) + cu_h^e -f(x) \right) \right] dx\\
+					0 = \int_{x_a^e}^{x_b^e} \left( a\frac{d w_i^e}{dx} \frac{du_h^e}{dx}  + cw^e_iu_h^e -w_i^ef(x) \right)  dx
+					-\left[ w_i^e a \frac{du_h^e}{dx}\right]_{x_a^e}^{x_b^e}
+					\end{aligned}
+				\end{equation}
+				
+			\end{itemize}
+			
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item Very interesting, we actually get the boundary terms too!
+			\begin{equation}
+			0 = \int_{x_a^e}^{x_b^e} \left( a\frac{d w_i^e}{dx} \frac{du_h^e}{dx}  + cw^e_iu_h^e -w_i^ef(x) \right)  dx
+			-\left[ w_i^e. a \frac{du_h^e}{dx}\right]_{x_a^e}^{x_b^e}
+			\end{equation}
+			Direct boundary on the dependant: Dritchlet/essential $u = 0$ \\
+			Boundary on the derivatives of dependant : Newman/natural $\frac{du}{dx} = p$
+			\item The coefficient of the weight function which is $a\frac{du}{dx}$ is the second variable
+			\item We state the differenet variables
+			\begin{equation}
+			\text{Primary variable : } u\qquad \text{Secondary variable:} n_x(a\frac{du}{dx}) = Q(x)
+			\end{equation}
+			See that $n_x = -1,1$ on left and right end. ???WHye
+			\item In the final weak form, we keep the secondary variables at the element ends as
+			\begin{equation}
+			Q_a^e = Q(x_a^e) = -\left(a \frac{du}{dx} \right)_{x_a^e} \qquad 	Q_b^e = Q(x_b^e) = \left(a \frac{du}{dx} \right)_{x_b^e}
+			\end{equation}
+			In the figure above we can think this of a FBD but in arbitary configruaion. The first one is a compressive, while later is a tensile force. In heat the first would be the heat input and later output
+			\item Althout Q replaced $a(\frac{du}{dx})$, it is not consdiered as a function of u, but a variable dual to u??????
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Final expresion}
+		\begin{itemize}
+			\item The final expression for the weak form is 
+			\begin{equation}
+				0 = \int_{x_a^e}^{x_b^e} \left( a \frac{d w_i^e}{dx}\frac{du_h^e}{dx}  + cw^e_iu_h^e -w_i^ef(x) \right)  dx
+				- w_i^e(x_a^e)Q_a^e - w_i^e(x_b^e)Q_b^e
+			\end{equation}
+			But even in the virtual work when you reduce the order of the strains, you get the boundary condition
+			\item The remarks are:
+			\begin{itemize}
+				\item Integration by parts (i) reduces the degree of the fem approximation (ii) introduces the secondary variables that are physically meanifull as they can be specified at a point where the primary variable is not specified. If the secondary variable is not a physical quantity, then the integraion by parts should not be carried out even to reduce the order of $u_h^e$
+				\item The terms containing both $w_h^e$ and $u_h^e$ are called bilinear functional 
+				\begin{equation}
+					B(w_i^e,u_h^e) = \int_{x_a^e}^{x_b^e} \left(a \frac{d w_i^e}{dx}\frac{du_h^e}{dx} + cw^e_iu_h^e \right)
+				\end{equation}
+				but has to be linear with respect to $w_i^e$ and $u_i^e$. So it has to be billinear map. Like a scalar product with metric tensor where u and v are the input and the metric tensor is the bilinear map. If a or/and c is a fucntion of u. Then B is always linear in w but not u.
+				\item Terms having only $w_i^e$ are only linear functionals because they are only linear with respect to $w_i^e$. $l(w_i^e)$
+				
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item Therefore the weak form can be expressed as 
+			\begin{equation}
+				B(w_i^e,u_h^e) = l(w)i^2
+			\end{equation}
+			which is a vairational problem where we find $u^e \in U$ such that the equation is satisfied for all $w_i^e \in U$ (See Reddy page 103 for hilbert spaces)
+			\item  The weak form is nothing but the statement of minimum total potential energy, or the variational minimum 
+			\begin{equation}
+				\begin{aligned}
+					\Pi(u_h^e) \\
+					\delta \Pi = B(\delta u_h^e,u_h^e) - l(\delta u_h^e) = 0 \\
+					\Pi(u_h^e) = \frac{1}{2}B(\delta u_h^e,u_h^e) - l(\delta u_h^e) \\
+					= \int_{x_a^e}^{x_b^e} \left[\frac{a}{2} \left(\frac{d u_i^e}{dx} \right)^2 + \frac{c}{2}(u_h^e)^2 - u_h^e f \right]dx - u_h^e(x_a^e)Q_a^e  - u_h^e(x_b^e)Q_b^e 
+				\end{aligned}
+			\end{equation}
+			This is when you have reduced the order of the derivative in the virtual work, (We get the Euler lagrange equilibrium).
+			\item This equation $\frac{1}{2}B(w_i^e,u_h^e) = l(w)i^2$, B shoudl be symmetric and the first term is the elastic energy while the later is the work done by the load and point loads.
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Approximate functions}
+		\begin{itemize}
+			\item We have to satisfy the weak form of the differential equation along with the continuity and boundary conditions. We need to choose a function that satisfies the differntiability requirement and the end conditions $u(x_i) = u^e_i$.
+			Any function with a non zero differentiation of the order of the weak form would be a candidate. We can therefore use interpolation.
+			\item The interpolation is
+			\begin{equation}
+				u^e_h(x) = c_1^e + c_2^e x
+			\end{equation}
+			is okay, since the differentiation $\neq 0$, but we only now need to make sure that $c_1, c_2$ are such that the end displacements match
+			\begin{equation}
+				u^e_h(x_a^e) = c_1^e + c_2^ex_a^e = u_a^e \qquad
+				u^e_h(x_b^e) = c_1^e + c_2^ex_b^e = u_b^e
+			\end{equation}
+			or \\
+			$\mat{1,x_a^e;1,x_b^e} \mat{c_1^e;c_2^e} = \mat{u_a^e;u_b^e}$
+			and we get the interpolating functions $u_h^e(x) = \sum_{j=1}^{2} N_j^eu_j^e$ \footnote{The book makes $\phi$ for N. But I usually use that for eigen directions?} 
+			\item $N_1^e(x) = \ \frac{x_b^e-x}{x_b^e-x_a^e}$ \qquad $N_2^e(x) = \ \frac{x-x_a^e}{x_b^e-x_a^e}$
+		\end{itemize}
+	\end{frame}
+
+	
+	\begin{frame}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.7\linewidth]{\pth/nfem/fig3} 
+		\end{figure}
+		\begin{itemize}
+			\item These N are linear lagrange interpolation functions and $u_1^e = u_a^e \qquad u_2^e = u_b^e$ are the nodal values of the approx function at the ends. $U_h$ belongs to a hilbert subspace spanned by $N_1^e,N_2^e$
+			\item Remember that $N_i^e(x^e_j) = 1 \quad \text{if} i=j$. They also satisfy the partition of unity where $\sum_{j=1} N_j^e(x) =1$
+			
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Quadratic approxiamtions}
+		For a quadratic approximation we choose
+		\begin{equation}
+			u_h^e(x) =  c_1^e + c_2^ex + c_3^ex^2
+		\end{equation}
+		\begin{itemize}
+			\item Since there are three parameters we need to have three nodal points where we can relate the constants to. 
+			\begin{equation}
+				x_1^e =  x_a^e \qquad x_2^e =  x_a^e + \frac{h_e}{2} \qquad x_3^e = x_a^e + h_e = x_b^e
+			\end{equation}
+			And we similary get :
+			\begin{equation}
+				u_h^e(x) = \sum_{j=1} N^e_ju_j^e
+			\end{equation}
+			where $N$ are the quadratic lagrange interpolation functions. If they are expressed in local coordinate we get
+			\begin{equation}
+				N_1^e(x') = \left(1-\frac{x'}{h_e} \right)\left(1-\frac{2x'}{h_e} \right) \qquad N_2^e(x') =4\frac{x'}{h_e}\left(1-\frac{x'}{h_e} \right) \qquad N_3^e(x') = -\frac{x'}{h_e}\left(1-\frac{2x'}{h_e} \right) 
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.7\linewidth]{\pth/nfem/fig4} 
+		\end{figure}
+		\begin{itemize}
+			\item This is a quadratic element
+			\item Any higher order lagrange interpolations can be developed. A (n-1)degree can be written as $u_h^e \sum_{j=1}^{n} N_j^eu_j^e$
+			\item Where the interpolating function can be given as
+			\begin{equation}
+				N_j^e(x) = { \Pi_{i=1,i\neq j}} \left( \frac{x-x_i^e}{x_j^e-x_i^e} \right)
+			\end{equation}
+			For example $N_1(x) = \left(\frac{x-x_2}{x_1-x_2} \right)\left(\frac{x-x_3}{x_1-x_3} \right)$
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Comments}
+		\begin{itemize}
+			\item Approx solution should be continous and differentiable as needed by the weak form. This ensures that every term in the differential equaion does not have a zero coefficient.
+			\item It should be a complete polynomial (Pascal's law). To capture all the actual deformation. Lower to higher!
+			\item It should interpolate the primary variables at the nodes of the fem and at the end points. To ensure continuity of the primary variable acorss elements!		
+			
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{FEM model}
+		\begin{itemize}
+			\item Keeping the approximate solutions in the weak form gives us the algebraic equatins
+			\item The degree of the approx solution has to be decied a priori. If there are more than 2 nodes, then the number of non-zero secondary variables increases at the interior nodes
+			\begin{equation}
+				 0 = \int_{x_a}^{x_b} \left(a \frac{dw_i^e}{dx} \frac{du_h^e}{dx} + cw_i^eu_h^e\right)dx - \int_{x_a}^{x_b} w_i^ef dx - \sum_{j=1}^{n} w_i^e (x_j^e)Q_j^e
+			\end{equation}
+			\item If 1 and n denote the end points then $Q_1^e,Q_n^e$ denote the unknown point sources, while the other $Q_j^e \quad(j=2,3...n-1)$ are the externally applied and known point sources. So at the ends these are internal or external loads??????
+			\item If we keep $w_i^e = N_i^e$ into the weak form, we get n algebraic equations. This is the Galerkin  method (Original was weighted of residual and not of the weak form, that would be exactly the same to Ritz method). The $i$th algebraic equation is the one obtained by keeping $w_i^e$ as $N_i^e$. This is the same as the virtual work method, where each equation of a discretised system comes from the virtual displacement of each node 
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item So we get
+			\begin{equation}
+				 0 = \int_{x_a}^{x_b} \left(a \frac{dN_i^e}{dx} \sum_{j=1}^{n} u_j^e\frac{dN_j^e}{dx} + cN_i^e\sum_{j=1}^{n}u_j^eN_j^e\right)dx - \int_{x_a}^{x_b} N_i^ef dx -  \sum_{j=1}^{n} N_i^e (x_j^e)Q_j^e
+			\end{equation}
+			so for each equation i there will be a summation on the derivatives of the approx solution due to chain rule! and we get
+			\begin{equation}
+				 0 = \sum_{j=1}^{n} \left[ \int_{x_a}^{x_b} \left(a \frac{dN_i^e}{dx}  \frac{dN_j^e}{dx} + cN_i^e N_j^e\right)dx\right]u_j^e - \int_{x_a}^{x_b} N_i^ef dx -  Q_i^e
+			\end{equation}
+			where we have taken the summation of u magitude coefficient for, shape functions  outside. Also we see that for each shape function at each node we actually only get the boundary load at that variation. Because $N_i^e(x^e_j) = 0$ when $i \neq j$. We get for each node!
+			\begin{equation}
+				0 = \sum_{j=1}^{n} K_{ij}^e u_j^e - f_i^e - Q_i^e
+			\end{equation}
+		\end{itemize}
+
+	\end{frame}
+
+	\begin{frame}
+		\begin{itemize}
+			\item Where
+			\begin{equation}
+			\begin{aligned}
+				K_{ij}^e = \int_{x_a}^{x_b} \left(a \frac{dN_i^e}{dx}  \frac{dN_j^e}{dx} + cN_i^e N_j^e\right)dx  =  B(N_i^e,N_j^e)\\
+				f_i^e = \int_{x_a}^{x_b} fN_i^e dx = l(N_i^e)
+			\end{aligned}
+			\end{equation}
+			So this is ineresting the coefficient of the stifness says basically states chagne in the shape functions!
+		\end{itemize}
+		\begin{block}{Matrix form}
+			\centering
+			$\ve{K^eu^e = f^e + Q^e \approx F^e}$
+		\end{block}
+	where 
+		\begin{itemize}
+			\item $K^e$	is the symmetric coefficient, stiffness matrix
+			\item $f^e$ is the source or force vector
+			\item This method is the weak-form Glaerikin or Ritz finite element method
+		\end{itemize}
+	
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{block}{Matrix form}
+			\centering
+			$\ve{K^eu^e = f^e + Q^e \approx F^e}$
+		\end{block}
+		\begin{itemize}
+			\item But for every element, we have $n$ equations and $n+2$ unknowns. The 2 unkowns are the secondary nodal values that we don't know $Q_a^e, Q_b^e$. ($u_1^e,u_2^e...u_n^e$) are the element primary nodal degrees. Remember these values, we know if they are along the inside of the element as external forces. 
+			\item Assembling the elements by imposing the continuity of the elements. U2 of 1 is U1 of 2. We get the same number of equations and unkowns (Primary + Secondary). 
+			\item The stiffness and force matrix can be found for a certain value. And if the coefficients (a,c,f) are also functions of x, then we need to do numerical integration. 
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{General fem one-d matrix form}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.7\linewidth]{\pth/nfem/fig5} 
+		\end{figure}
+	
+	     \begin{itemize}
+	     	\item Where in linear element lets write the expansion for the first linear element equation
+	     	\begin{equation}
+	     	\tiny
+	     	\begin{aligned}
+	     		    K_{11}u_1^e + K_{12}u_2^e = {f_1} + Q_1^e \\ 
+	     		    \left[\int_{0}^{h_e} a\frac{-1}{h_e}\frac{-1}{h_e} + c\left(1-\frac{x}{h_e} \right)\left(1-\frac{x}{h_e} \right) \right] u_1^e 
+	     		    + \left[\int_{0}^{h_e} a\frac{-1}{h_e}\frac{1}{h_e} + c\left(1 -\frac{x}{h_e} \right)\left(\frac{x}{h_e} \right) \right] u_2^e  =  \int_{0}^{h_e} f\left(1-\frac{x}{h_e} \right) + Q_1^e 
+	     	\end{aligned}
+	     	\end{equation}
+	     	\footnote{ We note that (i) In quad, the force vector is not just fh/3 but it depends on the work done! Not same with 2 elements combined. (ii) There are also more unkowns thatn the no of equations. When one element is used however we have only n unkowns cause bcs will be applied on Q.}  
+	     \end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Problem \#1}
+		\begin{itemize}
+			\item Consider a homogeneous, isotropic bar of length L(m), cross sectional area (A) and conductivity k (W/($m^oC$))
+			\item  Ambient temperature is $T_o(^oC)$
+			\item No heat loss throughout the bar and the right end is exposed to ambient temperature of $T_{inf }$
+			\item Uniform heat of $g_o$, heat transfer with fin and air is $\beta$
+			\item Check Reddy Page 3.2.1
+		\end{itemize}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.7\linewidth]{\pth/nfem/fig6} 
+		\end{figure} 
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.7\linewidth]{\pth/nfem/fig8} 
+		\end{figure} 
+		\begin{itemize}
+			\item Remember when we draw the internal force signs as compressive for a tensile element. This we are drawing for the nodal equilibrium side cut of the fbd. Rembember force, stresses are all defined with respect to the cut and face. 
+			\item In the Reddy example you will find that at the B.C., the internal force reaction at the node, $Q^4_2$ and $kU_5$ is a force in $\leftarrow$
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}{Natural coordinates}
+		\begin{itemize}
+			\item Check reddy 114 for origin at left side of element, natural $\bar{x}$
+			\item Origin at center denoted as $\xi$
+				\begin{itemize}
+					\item $\xi$ is -1 and +1 at LHS and RHS. Since your current basis is eucledian. The transfromation is linear.
+					\item x can be given as a function of $\xi$ and found out
+					\item This is interesting. Suppose $x = x_a +\frac{h}{2}(1+\xi)$
+					\begin{equation}
+					\begin{aligned}
+						\frac{d }{d x}  = \frac{2}{h}\frac{d }{d \xi} \quad \frac{d N_i}{d x}  = \frac{2}{h}\frac{d N_i}{d \xi} \\
+						dx = \frac{h}{2} d\xi \\ 
+						\int_{x_a^e}^{x_b^e}  N_i(x) dx = \int_{0}^{h}  N_i(\bar{x}) d\bar{x} = \frac{h}{2} \int_{-1}^{1} N_i(\xi) d\xi \\ 
+						\int_{x_a^e}^{x_b^e}  \frac{dN_i(x)}{x} dx = \int_{0}^{h}  \frac{N_i(\bar{x})}{\bar{x}} d\bar{x} =  \int_{-1}^{1} \frac{N_i(\xi)}{d\xi} d\xi \\ 
+						\int_{x_a^e}^{x_b^e}  \frac{dN_i(x)}{x} \frac{dN_j(x)}{x} dx = \int_{0}^{h}  \frac{N_i(\bar{x})}{\bar{x}}  \frac{N_j(\bar{x})}{\bar{x}} d\bar{x} = \frac{2}{h} \int_{-1}^{1} \frac{N_i(\xi)}{d\xi} \frac{N_j(\xi)}{d\xi}d\xi 
+					\end{aligned}
+					\end{equation}	
+				\end{itemize}
+			
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}{2D problems}
+		\begin{itemize}
+			\item Governing differential equation. Suppose a single field $u(x,y)$ with the following partial differential equation  varies over x and y
+			\item $\frac{\partial }{\partial x} \left(k_x\frac{\partial \phi}{\partial x} \right) + \frac{\partial }{\partial y} \left(k_y\frac{\partial \phi}{\partial y} \right) + f(x,y) = 0$
+			where for a heat problem, k is the conucitvity in a orthotropic medium and u is the temperature and f is the internal heat generation.  
+			\item Mixed boundary conditions 
+			\begin{itemize}
+				\item Dritchlet : $\phi = \hat{\phi}$ in some boundary
+				\item General Newman :$k_x\frac{\partial u}{\partial x} n_x  + k_y\frac{\partial u}{\partial y} n_y + q_c =  \hat{q_n}$ : In some portion of the boundary. 
+				\begin{itemize}
+					\item $q_c$ represents the convective component of flux (heat problems $q_c = h_c(u-u_c)$)
+					\item $n_x = cos(x,\ve{n})$ and $n_y = cos(y,\ve{n})$ which is the angle of the normal of the boundary and the axis
+					\item $u_c$ is the ambient temperature and $h_c$ is the convective heat coefficient				
+				\end{itemize}		
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{FEM approximation}
+		\begin{itemize}
+			\item In FEM the domain is descritised into subdomains. Any shape qualifies as long as the approximating functions $N_i^e$ can be derived uniquely for the shape. The discretisation may be may not represent the actual boundary though at really curved regions.
+			\item Suppose the dependent unkown $u$ is given by $\hat{u^e} = \sum_{j=1}^{n} u_j^eN_j^e(x,y)$
+			\item The interpolation functions depend not only on the number of nodes but also on the shape of the element
+			\item A triangle will need two points given by $\hat{u^e} = c_1+c_2x+c_3y$
+			\item A triangle with three nodes in each side is given by $\hat{u^e} = c_1+c_2x+c_3y + c_4xy + c_5x^2 + c_6y^2$			
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}{Weak form}
+		\begin{itemize}
+			\item The n nodal values $u_j^e$ must be found such that the approximating solution $u_h^e(x)$ satisfies the governing differential equation in a weak sense. Steps are :
+			\begin{enumerate}
+				\item Take non zeros of the G.D.E as R(x,y) and multiply by the weight function $w_i^e$ from a set of linearly independant functions. We get then 
+				\begin{equation}
+				\int \int_{\Omega} w_i^e  \left( k \frac{\partial^2 u_h^e}{\partial x^2} + k \frac{\partial^2 u_h^e}{\partial y^2} - f(x,y) \right) dx dy = 0  \qquad( Strong statement)
+				\end{equation} For n independant choices of $w_i^e$, we get n independant equations.
+				\item Distribute so that for both $u_h^e, w_i^e$ are required to be differentiated once. Using component form of the divergence theorem or Greens theorem : 
+				\begin{equation}
+				\begin{aligned}
+					\int \int_A \frac{\partial}{\partial x} (w_i^e F_1) dA = \int_S (w_i^eF_i)n_x ds   \\
+					\int \int_A \frac{\partial}{\partial y} (w_i^e F_2) dA = \int_S (w_i^eF_i)n_y ds   \\
+					F_1 = k_x \frac{\partial u^e_h}{\partial x} \qquad 
+					F_2 = k_y \frac{\partial u^e_h}{\partial y}
+				\end{aligned}
+				\end{equation}
+				And from product rule we get 
+				\begin{equation}
+					-w_i^e\frac{\partial F_1}{\partial x} = -\frac{\partial }{\partial x}(w_i^eF_1) + F_1 \frac{\partial w_i^e}{\partial x} 
+					\qquad
+					-w_i^e\frac{\partial F_2}{\partial x} = -\frac{\partial }{\partial x}(w_i^eF_2) + F_2 \frac{\partial w_i^e}{\partial x} 					
+				\end{equation}		
+			\end{enumerate}		
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item And we get the weak form as \\
+			$0 = \int\int_A   \left( k_x \frac{\partial w_i^e}{\partial x}\frac{\partial u_h^e}{\partial x} + k_y \frac{\partial w_i^e}{\partial x}\frac{\partial u_h^e}{\partial y} - w_i^ef(x,y) \right) dA - \int_S w_i^e \left( k_x \frac{\partial u_h^e}{\partial x}n_x + k_y \frac{\partial u_h^e}{\partial x}n_y \right) dS$
+			\item Now the order of the differentiation has been reduced. 	
+			\item Looking at the boundary terms, we see that $u_h^e$ is the primary variable and essential boundary. $q_n = \left( k_x \frac{\partial u_h^e}{\partial x}n_x + k_y \frac{\partial u_h^e}{\partial x}n_y \right)$ is the secondary variable and the natural boundary condition. It is positive as one travels counterclockwise in the boundary. 
+			\item This is wy nodes are counted in counterclockwise and boundary integrals are carried in counter-clockwise sense. $\ve{q}$ is the outward flux normal and the flux $\ve{q} =q_x e_1 + q_ye_2 \qquad \qquad q_x= k_x \frac{\partial u_h^e}{\partial x}  \quad q_y = k_y\frac{\partial u_h^e}{\partial y}$
+			\item  The normal flux is given by 
+			\begin{equation}
+			q_n = \hat{n}.\ve{q} =  k_x \frac{\partial u_h^e}{\partial x}n_x + k_y\frac{\partial u_h^e}{\partial y}n_y
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}
+		\begin{enumerate}
+			\item So the third step is to use the general Newmann boundary condition and write as 
+			\begin{equation}
+			0 = \int\int_A   \left( k_x \frac{\partial w_i^e}{\partial x}\frac{\partial u_h^e}{\partial x} + k_y \frac{\partial w_i^e}{\partial x}\frac{\partial u_h^e}{\partial y} - w_i^ef(x,y) \right) dA - \int_S w_i^e \left( \hat{q_n} -h_c(u_h^e-u_c) \right) dS
+			\end{equation}
+			\item Rearragning we get 
+			\begin{equation}
+			0 = \int\int_A   \left( k_x \frac{\partial w_i^e}{\partial x}\frac{\partial u_h^e}{\partial x} + k_y \frac{\partial w_i^e}{\partial x}\frac{\partial u_h^e}{\partial y} - w_i^ef(x,y) \right) dA - \int_S h_cw_i^e u_h^e dS	- \int_S w_i^e \left( \hat{q_n} +h_cu_c \right) dS		
+			\end{equation}
+			\item So we get the form $B(w_i^e,u_h^e) = l(w_i^e)$
+		\end{enumerate}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item Note that the variational problem is to find a $u_h^e$ such that  $B(w_i^e,u_h^e) = l(w_i^e)$ for all $w_i^e \in U_h$ a subspace span by polynomial basis functions.
+			\item $B(w_i^e,u_h^e) $ is bilinear and symmetric and $ l(w_i^e)$ is linear in w. So we can construct a functional $I = \frac{1}{2}B(u_h^e,u_h^e) -l(u_h^e)$ and the minmum is equivalent to solving the variation problem.
+			\item It is not always possible to make a functional whose weak form  whose first variation is equivalent to the weak form. 
+			
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Finite element method}
+		\begin{itemize}
+			\item The weak form in the above equation requires that the approx function to be at least linear in both x and y. Suppose that $u_h^e = N_i u_i$
+			\item The weak form is given as 
+			\begin{equation}
+			\begin{aligned}
+				\left(\int\int _A \frac{\partial N_j}{\partial x} k \frac{\partial \sum_{i=1}^{n} N_i }{\partial x} dA +
+				\int\int _A \frac{\partial N_j}{\partial y} k \frac{\partial \sum_{i=1}^{n} N_i }{\partial y} dA + \int_S h_c w_i^e N_j^e \right)u_j^e= 0 \\
+				- \int_A N_i^ef dA - \int_S N_i^e(\hat{q}+h_cu_c)dS
+			\end{aligned}
+			\end{equation}	
+			\item  This is when w is taken as the virtual displacemnt of the dependant unkown or $w_i^e = \delta u_h^e$. Each w we get a seperate equation and we get 
+			\item $K^eu^e = f^e + q^e$
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}{Approximating functions}
+		\begin{itemize}
+			\item u should be continous as required in the weak form that is all the terms are represented as non zero values
+			\item  The polynomials must be complete and contain the same order of x and y
+			\item All the terms in the polynomial should be linearly independant. The no o flinearly independent terms in represnetin u dictate the shape and no of nodes. It turns out only triangular and quad elements satisfy this.
+			
+		\end{itemize}
+	\end{frame}
+
