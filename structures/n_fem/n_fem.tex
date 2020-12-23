@@ -795,7 +795,547 @@
 			\item u should be continous as required in the weak form that is all the terms are represented as non zero values
 			\item  The polynomials must be complete and contain the same order of x and y
 			\item All the terms in the polynomial should be linearly independant. The no o flinearly independent terms in represnetin u dictate the shape and no of nodes. It turns out only triangular and quad elements satisfy this.
+		\end{itemize}
+	\end{frame}
+
+
+
+
+	\begin{frame}{Linear triangular element}
+		\begin{itemize}
+			\item The lowest order polynomial that we can come up with is
+			\begin{equation}
+			u_h^e(x,y) =c_1^e + c_2^ex +c_3^ey
+			\end{equation}
+			\item The set {1,x,y} is also linearly independant forming the basis for the subspace of the H1 hilbert space
+			\item Now we need to find out a geometry that we can also use the continuity cnditions. And we get a triangle
+			\item Check reddy 123 for shape functions
+			\item  The shape functions are lagrange interpolation functions, with the sum =1
+			\item If you mess up the aspect ratio, you will mess up the underlying physics. An intuition is as sometimes the stiffness can be decomposed to different matrixes that are dependant on its aspect ratio and the material properties.
+			\item The boundary conditions $q$ are not found for elements connected on all sides, but with nodes on the boundary, $q_n^e$ is known and found by $q_i^e = \int_S \hat{q_n}N_i^e(s)dS$.  The internal boundary forces are canceled, like the balance of internal forces.
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}{Linear bilinear (Lienar in x and y) rectangular element}
+		\begin{itemize}
+			\item The next polynomial that meets the requirements on the approx solution is 
+			\begin{equation}
+				u_h^e(x,y) =c_1^e + c_2^ex +c_3^ey + c_4xy
+			\end{equation}
+			\item  Th geometry is a quad element with a linear variation along two points in the element. We usually use isoparametric elements to represent the element.
+			\item Also node is named counterclockwise.
+			\item Reddy 126 for shape functions. Again we see that the aspect ration mess up the stiffness matrix. 
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}{Higher order triangular element}
+		\begin{itemize}
+			\item For triangular elements, we can construct natural coordinates $L_i$
+			\item $N_i = L_i = \frac{A_i}{A}$
+			\item $\ve{N} = \mat{L_1(2L_1-1);L_2(2L_2-1);L_3(2L_3-1);4L_1L_2;4L_2L_3;4L_3L_1}$
+			\item Formula to find the area also given using fromula (Reddy 128)
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Higher order rectangular element}
+		\begin{itemize}
+			\item By multiplying from single linear we get four node
+			\item Tensor product two quadratic one d we get quadratic quad element. 
+			\item Serendipity have no interior node. Not complete. They don't have the dual$^2$ term. 
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}{Element assembly}
+		\begin{itemize}
+			\item Continuity of primary variable : Same nodes from different elements
+			\item Equilibrium of secondary variables : At the interface between two elements, the flux or internal force fro the two elements is equal and opposite in sign. 
 			
 		\end{itemize}
 	\end{frame}
 
+
+
+	\begin{frame}{Axisymmetric problem}
+		\begin{itemize}
+			\item   The same second order equation in the polar coordinates are given as 
+			\begin{equation}
+				\frac{1}{r}\frac{\partial }{\partial r}\left(r k_{rr} \frac{\partial u}{\partial r} \right)
+				+ \frac{1}{r^2}\frac{\partial }{\partial \theta}\left( k_{\theta\theta} \frac{\partial u}{\partial \theta} \right)
+				+ \frac{\partial }{\partial z}\left(k_{zz} \frac{\partial u}{\partial z} \right) + f(r,\theta,z)=0
+			\end{equation}
+			\item We can remove the terms of $z$ and $\theta$ as if the problem is independant of these parameters. 
+			\item Reddy Page 137, One D and two D equations
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}{Numerical integration}
+		\begin{itemize}
+			\item We use numerical integration. We use some parametric form to also do the integration on a square
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Coordingate transforms}
+		\begin{itemize}
+			\item We do it on a square region dimension (2x2) with respect to ($\xi,\eta$) in domain -1< <1.
+			\item The element of the fem mesh is transformed, only for the purpose of numerical integration. 
+			\item We use a coordinate transformation of the form 
+			\begin{equation}
+			\begin{aligned}
+				x = \sum_{j=1}^{m} x_j^e N_j^e(\xi,\eta) \qquad \qquad 				y = \sum_{j=1}^{m} y_j^e N_j^e(\xi,\eta) \qquad \qquad 
+			\end{aligned}	
+			\end{equation}
+			\item The shape functions are of the master element in the -1 to 1 coordinate.
+			\item  The master element is transformed in the linear transfmration to the quadrilateral element. 
+			\item The dependant variable is also approximated by the same
+			\begin{equation}
+				u_h^e = \sum_{j=1}^{n} u_j^e \phi_j^e(\xi,\eta)
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+	
+	\begin{frame}
+		\begin{itemize}
+			\item Superparametric : If m > n. Geometry approx is higher
+			\item Isoparametric : If m = n
+			\item Subparametric : If m < n. If dependant variable is higher.
+			
+		\end{itemize}
+		Transfomration of the quad to the master is for numerical evaluation. The final equations are alwayas in terms of the nodal values of the physical domain.
+		\begin{enumerate}
+			\item Different elements can be generated from the same master element. A master elemeent can have differnet order.
+			\item A quad master can genreate quad curvilinear elements. 
+			\item But elements should not overlap each other.
+		\end{enumerate}
+	\end{frame}
+
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item Consider the stiffness matrix 
+			\begin{equation}
+				K^e_{ji} =  \int\int _A \frac{\partial N_j}{\partial x} k_x \frac{\partial  N_i }{\partial x} dA +
+				\int\int _A \frac{\partial N_j}{\partial y} k_y \frac{\partial N_i }{\partial y} dA
+			\end{equation}
+			\item Now this is in the global coordinates and we want to write it in terms of $\xi$ and $\eta$. 
+			\item We can write using chain rule 
+			\begin{equation}
+				\mat{\frac{\partial N_i^e}{\partial \xi }; ;\frac{\partial N_i^e}{\partial \eta}} = \mat{\frac{\partial x}{\partial \xi},\frac{\partial y}{\partial \xi}; , ;\frac{\partial x}{\partial \eta},\frac{\partial y}{\partial \eta}}
+				\mat{\frac{\partial N_i^e}{\partial x }; ;\frac{\partial N_i^e}{\partial y}}
+			\end{equation}
+			With the inner matrix the Jacobian $\ve{J}$, whose determinant should be >0
+			\item We can then find the inverese transformation for the derivatives as $\ve{ N,_{(x,y)} = J^{-1}N,_{(\xi,\eta)}}$
+			\item The geometry can also be easily differentiated
+			\begin{equation}
+			 \frac{\partial x}{\partial \xi} = \sum_{j=1}^{m} x_j^e \frac{\partial N_j}{\partial \xi} \quad \text{and so on}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item Obviously we also get $dA = det(J)\xi\eta$
+			\item When all or some of the variables are approximated using hermite interpolating functions, linear approx of geometry and so subparametric or isoparametric forms are adopted.
+			\item  Full stiffness matrix, we keep the terms in intergration in the master coodrinate. See Page 147
+			\item Integration over a master element can also be looked at page 148 and 149. Itis basically $\int_{-1}^{1}\int_{-1}^{1} F(\xi,\eta) d\xi d\eta = \sum_{I=1}^{M} \int_{J=1}^{N} F(\xi_I,\eta_J) W_i W_j$
+		\end{itemize}
+	\end{frame}
+
+
+\section{One D problem : Single variable}
+	\begin{frame}
+		\begin{itemize}
+			\item A(u(x)) = f(x) in interval 0 <x<L $\qquad$ B(u) = g
+			\item Consider the differential equation
+			\begin{equation}
+			\begin{aligned}
+				-\frac{d}{dx}\left(k(x,u) \frac{du}{dx} \right) + b(x,u)\frac{du}{dx} + c(x,u)u = f(x) \quad 0<x<L \\
+				\text{Boundary conditions}\\
+				n_xk\frac{du}{dx} + \beta(x,u)(u-u_{\infty}) = \hat{Q}   \quad or \quad u = \hat{u}
+			\end{aligned}
+			\end{equation}
+			\item Note that $n_x=-1, \beta = \beta_1$ at $x = x_a$ and $n_x=1, \beta = \beta_2$ at $x = x_b$
+			\item For a bar with a spring, $u_{\infty} = 0$ and we get the equation that the bar should be equal to the spring force $\beta u$. Or $-k\frac{du}{dx}-\beta_2u = Q_2 $ where Q2 is the extrenal force.
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.7\linewidth]{\pth/nfem/fig9} 
+			\end{figure} 
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item Therefore we can keep it generally and nicely as:
+			\begin{equation}
+			\begin{aligned}
+				A(u) = f \quad in \quad 0<x<L \qquad B(u) = g \quad at \quad x=0 or L \\
+				A = -\frac{d}{dx}\left(a \frac{d}{dx} \right) +  \frac{d}{dx} + c. \quad B = n_x a \frac{d}{dx} + \beta, \quad g = \beta u_{\infty} + \hat{Q}
+			\end{aligned}
+			\end{equation}
+			\item If a,b,c are functions of u then A and B become nonlienear.
+			\item In heat a = kA, b = 0 and c = perimeter  $. \beta$
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Weak formulation}
+	\begin{figure}
+			\centering
+			\includegraphics[width=0.7\linewidth]{\pth/nfem/fig10} 
+		\end{figure}
+	\end{frame}
+
+
+	\begin{frame}{FEM}
+		\begin{itemize}
+			\item If we use the discretisation then we will get 
+			\begin{equation}
+			K(U)U = F
+			\end{equation}
+		\end{itemize} 
+		\begin{figure}
+		\centering
+		\includegraphics[width=0.8\linewidth]{\pth/nfem/fig11} 
+		\end{figure}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item The Boundary terms still confuses me. Especially the sign part. So here it is! Qe is the external force. F is the nodal force with equivalent parts. We actually get the external force from the internal Boundary terms!
+			\begin{figure}
+				\centering
+				\includegraphics[width=1\linewidth]{\pth/nfem/fig12} 
+			\end{figure}
+			\item Check problem from Reddy for nonlinear constraints etc.
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}{Solution of nonlinear algebrai equations	}
+		\begin{itemize}
+			\item Direct iteration procedure
+			\item Newton rhapson method
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Direct Iteration procedure}
+		\begin{itemize}
+			\item We solve this system of equations using direct iteration, Picard iteration or method of successive substitutions
+			\begin{equation}
+				\ve{K(U^{(r-1)})U^r = F(U^{(r-1)})}
+			\end{equation}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8\linewidth]{\pth/nfem/fig13} 
+			\end{figure}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Direct Iteration procedure}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.5\linewidth]{\pth/nfem/fig14} 
+		\end{figure}
+		\begin{itemize}
+			\item The method can be accelerated by using a weighted average of solutions from the last two iterations
+		\begin{equation}
+			\begin{aligned}
+				\ve{U^r = K(\bar{U})^{-1}F(\bar{U})} \\
+				\ve{\bar{U} = \beta U^{(r-2)} + (1-\beta)U^{(r-1)}}
+			\end{aligned}
+		\end{equation}
+			\item Check Reddy 184 for some pages
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Newtons Iteration procedure}
+		\begin{itemize}
+			\item In NM we expand he residual vector $\ve{R^{(r)}}$ in Taylor series about a kown solution $\ve{U^{(r-1)}}$ to get
+			\begin{equation}
+				\ve{R^r = R^{(r-1)} + \left(\frac{\partial R}{\partial U} \right)^{(r-1)} {\Delta} U + O(h^2)}
+			\end{equation}
+			where $\Delta U =  U^r - U^{(r-1)}$
+			\item And saying that R in the next iteration should be zero we get
+			\begin{equation}
+			\begin{aligned}
+				\left(\frac{\partial R}{\partial U} \right)^{(r-1)}\Delta U = -R^{(r-1)} \\
+				T^{(r-1)} U^r = -R^{(r-1)}  + T^{(r-1)} U^{r-1}
+			\end{aligned}
+			\end{equation} 
+			where T is the tangent matrix can be found at element level given as
+			\begin{equation}
+			\left(T_{IJ} = \frac{\partial R_I}{\partial U_J} = K_{IJ} + \sum_{m=1}^{N} \left(
+			\frac{\partial K_{Im}}{\partial U_j} U_m\right) - \frac{\partial F_I}{\partial U_J} \right)^e
+			\end{equation}
+			The force derivative is zero if it is not a function of the load
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{NR method}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.5\linewidth]{\pth/nfem/fig15} 
+			\includegraphics[width=0.45\linewidth]{\pth/nfem/fig16} 		
+		\end{figure}	
+	\end{frame}
+
+
+	\begin{frame}{Comments}
+		\begin{itemize}
+			\item In the direct iteration method, the actual bc are applied at each iteration. In NR we find the increment to the known solution. If previous displ satisfies, then the increment should be zero and satisfy the boundary condition. 
+			\item The symmetrry of K and T depends on the weak form. even if K is symmetric, T may not be symmetric.
+			\item T can be approximate, and convergance is only when the residual is small. If it is only updated once then it is called the modified Netwons method.
+			\item See the problem in Reddy -188 . Finding T	
+		\end{itemize}
+	\end{frame}
+
+
+\section{Nonlinear Bending of straight beams}
+	\begin{frame}{Introduction}
+		\begin{itemize}
+			\item Assuming he geomery does no change significanty, allows he principle of virtual work o be written over the underformed body. So stress is force per unit undeforemed are, strain measure of change in length w.r.t original length and shear as change in length from $\pi/2$. No distincion between Piola kirchoff and cauchy stress
+			\item Nonlinearity comes solely from inplane forces proportional to he square of the rotation of a transverse normal line in the beam
+			\item There are two theories
+				\begin{itemize}
+					\item Euler bernoulli beam (EBT)
+					\item Timoshenko beam (TBT)
+					
+				\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Euler-Bernoulli Beam theory}
+		Assumptions:
+		\begin{itemize}
+			\item Plane sections perpendicular to he axis of the beam remain (a) plane (b) rigid (not deform) (c) rotate such that they remain plane to the deformed axis after deformation
+			\item  Assumptions amount to neglection poissons effect and transverse normal and shear strains
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Displacements and strain fields}
+		\begin{itemize}
+			\item 		
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.7\linewidth]{\pth/nfem/fig17} 		
+			\end{figure}
+			The displacement is given as : $u_1 = u(x) - z\frac{d w}{d x} \qquad u_2 = 0 \qquad u_3 = w(x)$ \\
+			$u_1,u_2,u_3$ is the disp of any point while $u,w$ are the disp of the centroidal axis \\
+			\item So the total disp can be found from the neutral axis values. 		
+			
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item The greens theorem is
+			\begin{equation}
+				\begin{aligned}
+					E_{ij} = \varepsilon_{ij} = \frac{1}{2}\left(\frac{\partial u_i}{\partial x_j} + \frac{\partial u_j}{\partial x_i} \right) + \frac{1}{2}\frac{\partial u_k}{\partial x_i}\frac{\partial u_k}{\partial x_j}\\
+					\varepsilon_{11} = \frac{\partial u_1}{\partial x_1} + \frac{1}{2}\left[\left(\frac{\partial u_1}{\partial x_1} \right)^2 + \left(\frac{\partial u_3}{\partial x_1} \right)^2 \right]
+				\end{aligned}
+			\end{equation}
+			\item Now the axial strains of higher orders we can igore, bu the rotation of the line perpendicular to the beam is pretty large so we have to retain it.
+			\item Non-linear strains where only squares of the rotations are included are known as von Karman nonlinearity 
+			\item The zero strains are $\varepsilon_{33} = \varepsilon_{13} = 0$ so only non zero strain is
+			\begin{equation}
+				\varepsilon_{11} = \frac{d u}{d x} - z\frac{d^2 w}{d x^2} + \frac{1}{2} \left(\frac{dw}{dx} \right)^2 
+			\end{equation}
+			\item  So we have two longitudinal von karman strains:
+			\begin{equation}
+				\varepsilon^0_{11} = \frac{d u}{d x} + \frac{1}{2} \left(\frac{dw}{dx} \right)^2  \qquad ,  \quad 
+				\varepsilon^1_{11} = - z\frac{d^2 w}{d x^2} 
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Virtual displacments : Weak form}
+		\begin{itemize}
+			\item The weak form can be found withou knowing the governing d.e
+			\item If a body is in equilibrium, the toal virtual work done in moving through the repsective displacements is zero
+			\begin{equation}
+				\delta W^e = \delta W_I^e + \delta W_E^e
+			\end{equation}
+			$\delta W_I^e$ denotes the virtual strain stored due to the actual cauchy or second piolay stresses (Same geom) $\sigma_{ij}$\\
+			$\delta W_E^e$ is the work done by external applied loads	
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item So we have
+			\begin{equation}
+			\begin{aligned}
+			\delta W_I^e = \int_V^e \delta \varepsilon_{xx} \sigma_{xx} dV = \int_{x_a}^{x_b} \int_A^e \left(\frac{d \delta u}{dx} + \frac{dw}{dx}\frac{d\delta w}{dx} - z \frac{d^2\delta w}{dx^2} \right) dA dx \\
+			\delta W^e_E = - \left[\int_{x_a}^{x_b} q \delta w dx + \int_{x_a}^{x_b} f \delta u dx + \sum_{i=1}^{6}Q_i^e \delta \Delta_i^e \right] 
+			\end{aligned}
+			\end{equation}	
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.7\linewidth]{\pth/nfem/fig18} 		
+			\end{figure}
+			
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Sign conventions}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.6 \linewidth]{\pth/nfem/fig19} 		
+		\end{figure}	
+		\begin{itemize}
+			\item The main thing is that for $V_x$, the component of $N_x$ is $sin(\frac{dw}{dx}) \approx \frac{dw}{dx}$, and also in moment equilibirum we get $N_{xx}\frac{dw}{dx}\Delta x = N_{xx}\Delta w$
+			
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item The free body diagram is what it is. But we can take our generalised displacement and force dof signs based on what we want.
+			\item Generalised is used to show that rotationsa and moments are treated as displacements and forces
+			\item By integrating in the area we get the virtual work as 
+			\begin{equation}
+				\delta W_I^e = \int_{x_a}^{x_b} \left[  \left(\frac{d \delta u}{dx} 
+				+ \frac{dw}{dx}\frac{d\delta w}{dx} \right)N_{xx} - \frac{d^2 \delta w}{dx^2} M_{xx}\right] - \int_{x_a}^{x_b} \delta w q dx - \int_{x_a}^{x_b} \delta u f dx  - \sum_{i=1}^{6} \delta \Delta_i^e Q_i^e
+			\end{equation}
+			where $N_{xx} = \int_A \sigma_{xx}dA \qquad M_{xx} = \int_A \sigma_{xx}zdA$ 
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		By taking the individual virtual terms, as the coefficients have to seperately equal to zero we get \\
+		$\int_{x_a}^{x_b} \left( \frac{d\delta u}{dx}N_{xx} -\delta u f\right)dx - \delta \Delta_1^e Q_1^e - \delta \Delta_4^e Q_4^e = 0$\\
+		$\int_{x_a}^{x_b} \left( \frac{d\delta w}{dx}\left(\frac{dw}{dx}N_{xx} \right) -\frac{d^2 \delta w }{dx^2}M_{xx} - \delta w q\right)dx - \delta \Delta_2^e Q_2^e - \delta \Delta_3^e Q_3^e - \delta \Delta_5^e Q_5^e -  \delta\Delta_6^e Q_6^e = 0$
+		\begin{itemize}
+			\item By integration by parts we get the euler lagrange equilibrium equations : given as 
+			\begin{equation}
+				\begin{aligned}
+					\int_{x_a}^{x_b} \delta u\left( -\frac{d\delta N_{xx}}{dx} - f\right)dx - \delta \Delta_1^e Q_1^e + \left[\delta u N_{xx}\right]_{x_b}^{x_a} - \delta \Delta_4^e Q_4^e = 0\\
+					\int_{x_a}^{x_b} - \delta w\left( \frac{d}{dx}\left(\frac{dw}{dx}N_{xx} \right) +\frac{d^2 M_{xx}}{dx^2} + q\right)dx - \left[ \frac{d\delta w}{dx} M_{xx}\right]_{x_b}^{x_a}  \\+  \left[ \delta w \left(\frac{dw}{dx}N_{xx} + \frac{d M_{xx}}{dx}  \right)\right]_{x_b}^{x_a} - \delta \Delta_2^e Q_2^e - \delta \Delta_3^e Q_3^e -  \delta\Delta_5^e Q_5^e -  \delta\Delta_6^e Q_6^e = 0
+				\end{aligned}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item We get our euler equations from coefficients of the two variations
+			\begin{equation}
+			\begin{aligned}
+				-\frac{dN_{xx}}{dx} = f(x) \\
+				-\frac{d}{dx}\left(\frac{dw}{dx}N_{xx} \right) - \frac{d^2 M_{xx}}{dx^2} = q(x)
+			\end{aligned}
+			\end{equation}
+			\item We get our boundary conditions as follows :
+			\begin{equation}
+			\begin{aligned}
+			  Q_1^e = -N_{xx}(x_a) \qquad \qquad Q_4^e = N_{xx}(x_b) \\
+			  Q_2^e = -\left[ \frac{dw}{dx}N_{xx} + \frac{dM_{xx}}{dx}\right]_{x_a} \quad 
+			  Q_5^e = \left[ \frac{dw}{dx}N_{xx} + \frac{dM_{xx}}{dx}\right]_{x_b} \\
+			  Q_3^e = M_{xx}(x_a) \qquad\qquad  Q_6^e = M_{xx}(x_b) \\
+			\end{aligned}
+			\end{equation}
+			Again the - sign makes all the Qs positive in the equation
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item We can also find the differential equations by writing the equilibirum equaitons (Fx,Fy,Mz = 0) for a small element and then take $\Delta x \rightarrow 0$. But we don't get the boundary conditions by using this. 
+			\item After getting the euler lagrange differnetial equations, we can again use the weighted residual method to find the stiffness forms
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8 \linewidth]{\pth/nfem/fig20} 		
+			\end{figure}
+			\item We clearly see that the weights are nothing but the variations and the external load work has been replaced by the internal force equivalents!!!!
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item Now the funny thing is that we kept as N and M and now we shall replace them by 
+			\begin{equation}
+				\begin{aligned}
+					N_{xx} = \int_A \sigma_{xx} dA = \int_{A^e} E^e \left[\frac{du}{dx} + \frac{1}{2}(\frac{dw}{dx})^2 - z\frac{d^2w}{dx^2} \right] dA \\
+					= A^e \left[\frac{du}{dx} + \frac{1}{2}(\frac{dw}{dx})^2 \right] - B^e z\frac{d^2w}{dx^2}\\
+					M_{xx} = \int_{A^e} \sigma_{xx} z dA = B^e  \left[\frac{du}{dx} + \frac{1}{2}(\frac{dw}{dx})^2 \right] - D^e \frac{d^2w}{dx^2}
+				\end{aligned}
+			\end{equation}
+			where $A = EA,\qquad B = 0 \left(\int z dA = 0 \right) ,\qquad D = EI \left(\int z^2 dA \right)$
+			\item Therefore the virtual work equations can be written as
+			\begin{equation}
+			\begin{aligned}
+				0 = \int_{x_a^e}^{x_b^e} \left( A \frac{d\delta u}{x} \left[\frac{du}{dx} + \frac{1}{2}\left(\frac{dw}{dx} \right)^2 \right] -f\delta u\right) dx - \delta u(x_a)Q_1 - \delta u(x_b)Q_4 \\
+				0 = \int_{x_a^e}^{x_b^e} \left( \frac{d\delta w}{dx}\frac{dw}{dx}A \left(\frac{du}{dx} + \frac{1}{2}\left(\frac{dw}{dx} \right)^2 \right) + D \frac{d^2 \delta w}{dx^2} \frac{d^2w}{dx^2} - q\delta w  \right) dx  \\ - \delta w(x_a) Q_2 - \delta \theta(x_a)Q_3 - \delta w(x_b) Q_5- \delta \theta(x_b)Q_6 
+			\end{aligned}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{FEM}
+		\begin{itemize}
+			\item We take the rotation as $\theta = - \frac{dw}{dx}$
+			\item  We approximate the axial disp as linear lagrange and the transverse with hermite cubic interpolation functions 
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{FEM}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.66 \linewidth]{\pth/nfem/fig21} 		
+		\end{figure}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item Note that the Stiffness is not symmetric. When nonlinearity is not there then 12 and 21 (which depend on w) become 0 and the system is uncoupled. That is axial is only dependant on $u$ and bending only dependant on $\Delta$.
+			\item See that we have tried to keep the shape functions symmetric
+			\item When we find these conefficients from the previous iteration and then we say that the equations are linearised
+			\item  The coefficients can be different if we had accounted for the terms differently, and uncouple then to a system of equations . Read reddy page 223 for this (Did not understand as of now)
+			\item  We can also decompose the matrix because the 12 and 21 terms are very similar (Reddy 224)
+			\item We obviously solve using direct iterative or NR method. Check reddy for the derivations of T 
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Membrane locking}
+		\begin{itemize}
+			\item For the von Karman nonlinearity, for two beams : hinge hinge and pined pined under transverse loading. Will not have $u = 0$ because of the coupling and the solution will not be thesame. 
+			
+		\end{itemize}
+	\end{frame}
