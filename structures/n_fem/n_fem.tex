@@ -1334,8 +1334,313 @@
 
 
 	\begin{frame}{Membrane locking}
+		\small
 		\begin{itemize}
-			\item For the von Karman nonlinearity, for two beams : hinge hinge and pined pined under transverse loading. Will not have $u = 0$ because of the coupling and the solution will not be thesame. 
+			\item For the von Karman nonlinearity, for two beams : roler roler and pined pined under transverse loading. Will not have $u = 0$ because of the coupling and the solution will not be thesame. 
+			\item  Suppose the roler roler beam has a constraint on u in the middle to remove rigid body movemenl, and transverse load does not make axial strain because the beam can slide without making stresses. This will have higher transverse deflection because it can stretch.
+			\item The pined pined however has constraints on x = 0 and x = L so it will develop axial strains.
+			\item  To make sure that the roler roler does not have any axial strain \\
+			$\varepsilon_{xx}^o = \frac{du}{dx}+\frac{1}{2}(\frac{dw}{dx})^2 = 0$\\
+			And basically both shoud be of the same order $-\frac{du}{dx} = \left(\frac{dw}{dx} \right)^2$
+			\item So when w is cubic $\frac{dw}{dx}$ is square and the power makes it quad. So $u$ should be atleast order fifth. Taking u with any polynomial less , will make the constraint not satisfied and stiff, giving zero displacement field. (Membrane locking)
+			\item We can also treat the axial strain  as constant. Since $\frac{du}{dx}$ is const, we can make $(\frac{dw}{dx})^2$ also constant. We can do this by reduced integration of all nonlinear stiffness coefficients (A,B,D).
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Computation of stresses and strains}
+		\begin{itemize}
+			\item Strains and stresses are close when found at the Gauss points
+			\item u is aprrox with linear lagrange and w is approx with hermite cubic polynomials.
+			\item Membrane strain $\varepsilon^0_{xx}$ is assumed constant is evaluated using one point G.Q, and the bending strain $\varepsilon^1_{xx}$ is also linear and done by one point G.Q.
+			\item 
+			\begin{equation}
+			\begin{aligned}
+				\varepsilon^0_{xx} = \frac{du}{dx} + \frac{1}{2}\left(\frac{dw}{dx} \right)^w \\ 
+				\varepsilon^1_{xx} = -\frac{d^2w}{dx^2}
+			\end{aligned}
+			\end{equation}
+			And the stresses are given as follows :
+			\item $\sigma_{xx} = \sigma_{xx}^0 + z\sigma_{xx}^1 = E \varepsilon_{xx}^0 + z E \varepsilon_{xx}^1$ \\
 			
 		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}{Timoshenko beam theory (TBT)}
+		\begin{itemize}
+			\item The euler bernoulli beam is based on fact that a straight line transverse to axis before defomration remains (1) straight (2) inextensible (3) normal to mid plane after deformation. In TBT, we say the last assumption, the rotation is independant of the slope
+			\item So we get the displacement field with an independant slope
+			\begin{equation}
+				u_1 = u(x) + z \phi_x(x) \qquad u2 = 0 \qquad u_3 = w(x)
+			\end{equation} 
+			\item The non zero strains are :
+			\begin{equation}
+			\begin{aligned}
+				\varepsilon_{xx} = \frac{du_1}{dx} + \frac{1}{2}(\frac{du_3}{dx})^2 = \frac{du}{dx} + \frac{1}{2}(\frac{dw}{dx})^2 + z \frac{d\phi}{dx} = \varepsilon^0_{xx} + z\varepsilon^1_{xx} \\
+				\gamma_{xz} = \frac{du_1}{dz}  \frac{du_3}{dx} = \phi + - \left(-\frac{dw}{dx} \right) = \gamma_{xz}^0
+			\end{aligned}
+			\end{equation}	
+			The last one we get because we remove the rotation due to w
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item The virtual strains are :
+			\begin{equation}
+				\begin{aligned}
+					\delta \varepsilon_{xx}^0 = \frac{d\delta u}{dx} + \frac{dw}{dx}\frac{d\delta w}{dx} \\
+					\delta \varepsilon^1_{xx} = z \frac{d\phi}{dx} \\
+					\delta \gamma_{xz} = \delta \phi + \frac{d \delta w}{dx} 
+				\end{aligned}
+			\end{equation}	
+		\end{itemize}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.66 \linewidth]{\pth/nfem/fig22} 		
+		\end{figure}
+	\end{frame}
+
+
+	\begin{frame}{Weak form}
+		\begin{itemize}
+			\item The weak form is similaly developed (Reddy 243)
+			\begin{equation}
+			 \delta W = \int_{x_a^e}^{x_b^e} \int_{A^e} \left(N_{xx} \delta \varepsilon_{xx}^0 + M_{xx}\delta\varepsilon_{xx}^1 + Q_x \delta\varepsilon_{xz}^0 \right) - \delta W_E^e
+			\end{equation}
+			Note that : \\
+			$N = \int \sigma dA, \quad M =  \int \sigma z dA \quad Q =  \int \sigma_{xz}dA$ \\
+			$\sigma =  E\varepsilon \quad \sigma_{xz} = KG\gamma_{xz}$
+			\\
+			The K thing is cause we assume a constant shear over the cross section when we just say stress is G x strain. So it is a correcting factor! We compare the two energies and then we find K.
+			\item Trying to keep all the variations in the same derivative order, we get the euler equilibrium equations, taking each coefficient as zero
+			\begin{equation}
+				\begin{aligned}
+					\delta u : \quad -\frac{dN}{dx} = f(x) \\
+					\delta w : \quad -\frac{dQ}{dx}  - \frac{d}{dx}\left(N \frac{dw}{dx} \right) = q(x)\\
+					\delta\phi : -\frac{dM}{dx} + Q_x = 0
+				\end{aligned}
+			\end{equation}
+			u,w, $\phi$ are the primary and N,Q,M are the secondary variables
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item We keep the secondary variables in terms of the independant primary variables
+			\begin{equation}
+			\begin{aligned}
+				N = A \left[ \frac{du}{dx} + \frac{1}{2} \left(\frac{dw}{dx} \right)^2\right] + B \frac{d\phi}{dx} \\
+				M = B \left[ \frac{du}{dx} + \frac{1}{2} \left(\frac{dw}{dx} \right)^2\right] + D \frac{d\phi}{dx} \\
+				Q = S \left(\frac{dw}{dx} + \phi \right)
+			\end{aligned}
+			\end{equation}
+			 A,B,D are the previous terms moments of area giving the integral only in the x direction in the virtual work. S is the shear stiffness given as $S = K \int G dA = K G A =  \frac{KEA}{2(1+ \nu)}$
+			 \item  Obviously we can derive the governing differential equilibrium equations (Page 245). For homogeneous beams , we have B = 0. which are the equilibrium equations given by the variational principle
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{FEM}
+		\begin{itemize}
+			\item The virtual work statement is then given as 
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8 \linewidth]{\pth/nfem/fig23} 		
+			\end{figure}
+			\item  The Q's have the same meaning as the euler bernoulli element
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{FEM}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.5 \linewidth]{\pth/nfem/fig24} 		
+		\end{figure}
+		\begin{itemize}
+			\item We then get $\ve{Ku = F}$ where $\ve{u = \mat{u,w,\phi}^T}$. Check Reddy 249 for T stiffness derivation
+			
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Shear and Membrane locking}
+		\begin{itemize}
+			\item Timoshenko beam without von Karman nonlinearity differ from each other in the choice of the approx function for w and $\phi$. Some are equal and others different
+			\item Linear interpolation of both w and $\phi$ is the easisest. This makes the slope $\frac{dw}{dx}$ constant. In a think beam, as the length to thickness ratio becomes large (100), the slope would be equal to $-\phi$ which is linear instead of constant. 
+			\item On the other hand a constant $\phi$ leads to zero bending energy while the transverse shear is nonzero. 
+			\item  Check Reddy 248 ( Have not understood fully Locking issue)
+			\item The primary variables may not be approximated by the same shape functions :
+			\begin{equation}
+			u(x) = N^1_iu_i \qquad w(x) = N^2_iw_i \qquad \phi(x) = N^3_i\phi_i
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Functionally graded materials}
+		Check reddy
+	\end{frame}
+	
+	
+	
+	\section{Two dimensional problems having a single variable}
+	\begin{frame}{Model equation}
+		\begin{itemize}
+			\item Suppose we are trying to find the solution $u(x,y)$ of the following partial differential equation
+			\begin{equation}
+			 -\frac{d}{dx}\left(a_{xx} \frac{\partial du}{\partial dx} + a_{xy} \frac{\partial u}{\partial y} \right)
+			 -\frac{d}{dy}\left(a_{yx} \frac{\partial du}{\partial dx} + a_{yy} \frac{\partial u}{\partial y} \right) + a_{00} u = f(x,y) \quad \text{in} \quad \Omega
+			\end{equation}	
+			The coefficients are also a function o u : eg $a_{xx} = f(x,y,u,\frac{\partial u}{\partial x }, \frac{\partial u}{\partial y})$
+			\item When we descritize it with $\bar{\Omega}$ with a boundary $\bar{\Gamma}$, we get a residual given as :
+			\begin{equation}
+				R(u_h) = 
+				-\frac{d}{dx}\left(a_{xx} \frac{\partial du_h}{\partial dx} + a_{xy} \frac{\partial u_h}{\partial y} \right)
+				-\frac{d}{dy}\left(a_{yx} \frac{\partial du_h}{\partial dx} + a_{yy} \frac{\partial u_h}{\partial y} \right) + a_{00} u = f(x,y)
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Weak form}
+		The step is to multiply the residual with the ith weight function $w_i(x,y)$ which should be differentiable too. We then set $w_iR$ over the element domain $\Omega^e = 0$
+		\begin{itemize}
+			\item $0 = \int_{\Omega_e} w_i \left[ 
+			-\frac{d}{dx}\left(a_{xx} \frac{\partial u_h}{\partial x} + a_{xy} \frac{\partial u_h}{\partial y} \right)
+			-\frac{d}{dy}\left(a_{yx} \frac{\partial u_h}{\partial x} + a_{yy} \frac{\partial u_h}{\partial y} \right) + a_{00} u - f(x,y) \right] dxdy$
+			\item Now we know : $\frac{d}{dx}\left(w \frac{du}{dx}\right) = w\frac{d^2u}{dx^2} + \frac{dw}{dx}\frac{du}{dx}$ \\ and $\int_A \frac{d}{dx}\left(w \frac{du}{dx} \right) dA= \int_S \left(w \frac{du}{dx} \right) dS$
+			\item We get 
+			\begin{equation}
+			\begin{aligned}
+			0 = \int_A \left[\frac{\partial w_i}{\partial x} \left(a_{xx} \frac{\partial u_h}{\partial x } + a_{xy} \frac{\partial u_h}{\partial y }\right) + 
+			\int_A \frac{\partial w_i}{\partial y} \left(a_{yx} \frac{\partial u_h}{\partial x } + a_{yy} \frac{\partial u_h}{\partial y }\right) + a_{00}w_iu_h - w_if \right]dxdy \\
+			- \int_S w_i \left[ \left(a_{xx} \frac{\partial u_h}{\partial x} + a_{xy} \frac{\partial u_h}{\partial y} \right)n_x + \left(a_{yx} \frac{\partial u_h}{\partial x} + a_{yy} \frac{\partial u_h}{\partial y} \right)n_y \right]dS
+			\end{aligned}
+			\end{equation}
+			where $\ve{n = n_xe_1 + n_ye_2}$ which gives the direction consies of the boundary $\Gamma^e$. The second term can also be written as $-\int_S q_n dS$ which is the external flux normal as we move counter clockwise. 
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.5 \linewidth]{\pth/nfem/fig25} 		
+		\end{figure}
+	\begin{itemize}
+		\item In the case of heat transfer through an anisotropic medium, aij denotes the conductivity and qn is the normal heat flux
+		
+	\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{FEM}
+		\begin{itemize}
+			\item The weak form states that u should be atleast linear in both x and y
+			\item $u_h^e = \sum u_iN_i(x,y)$ with $N_i(x_j,y_j) = \delta_{ij} $ and $\sum_j N_j(x,y)=1$
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8 \linewidth]{\pth/nfem/fig26} 		
+			\end{figure}	
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item The equations have to be solved by nonlinear methods
+			\item The tangent T is given in page 271
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Axisymmetric problems}
+		\begin{itemize}
+			\item The differential equation in cylindrical coordinate system (r,$\theta,z$)
+			\begin{equation}
+				-\frac{1}{r}\frac{\partial}{\partial r}\left(ra_{rr}\frac{\partial u}{\partial r} \right)
+				- \frac{1}{r^2}\frac{\partial}{\partial \theta}\left(a_{\theta\theta}\frac{\partial u}{\partial \theta} \right)
+				- \frac{\partial}{\partial z}\left(a_{zz}\frac{\partial u}{\partial z} \right) = f
+			\end{equation} 
+			\item where u,f and the coefficients are a function of (r,$\theta,z$)
+			\item Dependant on the coefficents, boundary conditions and load f the problem can be made to 2D or even 1D
+			\item If the cylinder is very long and stuff dont vary and depend on z, then we can assume a disk. No also if there is independance from $\theta$ then we can even just do a radial line \footnote{We just remove the derivatives in the equations where the change will be zero}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8 \linewidth]{\pth/nfem/fig27} 		
+			\end{figure}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{FEM}
+		\begin{itemize}
+			\item Suppose all the variables are not dependant on $\theta$, therefore we would get something like a plane and the Governing differential equation will be
+			\begin{equation}
+				-\frac{1}{r}\frac{\partial}{\partial r}\left(ra_{rr}\frac{\partial u}{\partial r} \right)
+				- \frac{\partial}{\partial z}\left(a_{zz}\frac{\partial u}{\partial z} \right) = f(r,z)
+			\end{equation}
+			\item The weighted statement and weak form (Using greens theorem) will be given as :
+			\begin{equation}
+			\begin{aligned}
+			 0 = \int_A w_i \left[ 	-\frac{1}{r}\frac{\partial}{\partial r}\left(ra_{rr}\frac{\partial u}{\partial r} \right)
+			 - \frac{\partial}{\partial z}\left(a_{zz}\frac{\partial u}{\partial z} \right) - f(r,z)\right] rdrdz \\
+			 = \int_A \left[ a_{rr}(r,z,u_h) \frac{\partial w_i}{\partial r}\frac{\partial u_h}{\partial r}
+			 + a_{zz}(r,z,u_h) \frac{\partial w_i}{\partial z} \frac{\partial u_h}{\partial z}\right] rdrdz - \int_A w_if(r,z)rdrdz - \int_S w_iq_n ds 
+			\end{aligned}
+			\end{equation}
+			where $q_n = r\left[ a_{rr} \frac{\partial u_h}{\partial r}n_r + a_{zz}\frac{\partial u_h}{\partial z} n_z\right]$
+			\item And we get $\ve{Ku = f+Q = F}$
+			\item Remember the shape functions are functions of N(r,z)	
+	\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Numerical integration}
+		\begin{itemize}
+			\item
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.9 \linewidth]{\pth/nfem/fig28} 		
+			\end{figure} 
+			
+		\end{itemize}
+	\end{frame}
+
+	
+	\begin{frame}{Gauss quad - coordinate change}
+		\begin{itemize}
+			\item Remember that we have to we have to transform the integral domain to the master element so that Gauss quadrature can be usd. The derivatives in the original geometry are also expressed with respect to $\xi,\eta$ given by
+			\begin{equation}
+			\mat{\frac{\partial N_i}{\partial dx}; ;\frac{\partial N_i}{\partial dy} } = \ve{J^{-1}} \mat{\frac{\partial N_i}{\partial d\xi}; ;\frac{\partial N_i}{\partial d\eta} } 
+			\end{equation}
+			where $\ve{J} = \mat{\frac{\partial x}{\partial \xi}, \frac{\partial y}{\partial \xi}; , ; \frac{\partial x}{\partial \eta}, \frac{\partial y}{\partial \eta}} =
+			\mat {\sum x_i \frac{\partial N_i}{\partial \xi}, \sum y_i \frac{\partial N_i}{\partial \xi} ; , ; 
+			\sum x_i \frac{\partial N_i}{\partial \eta}, \sum y_i \frac{\partial N_i}{\partial \eta}} = \mat{\frac{\partial N_1}{\partial \xi}, \frac{\partial N_2}{\partial \xi}, .... ,\frac{\partial N_m}{\partial \xi} ; , , ,;
+			\frac{\partial N_1}{\partial \eta}, \frac{\partial N_2}{\partial \eta}, ...., \frac{\partial N_m}{\partial \eta} }
+	 		\mat{x_1, y_1; , ; x_2, y_2; , ; \vdots, \vdots; x_m,y_m}$ 
+	 		\item If the same shape functionsa re used for the geometry and field variable, we say its isoparametric
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.6 \linewidth]{\pth/nfem/fig29} 		
+		\end{figure} 
+	where J* are the components of the inverse jacobian
+	\end{frame}
+
+
+	\section{Time dependant problems}
+	
+	\begin{frame}{Time dependacy}
+		Will have to read later!!
 	\end{frame}
