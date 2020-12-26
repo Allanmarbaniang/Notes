@@ -1644,3 +1644,359 @@
 	\begin{frame}{Time dependacy}
 		Will have to read later!!
 	\end{frame}
+
+
+
+\section{Plates}
+
+	\begin{frame}
+		\begin{itemize}
+			\item Plate has large dimension compared to thickness. No need to use 3D, with study the deformations and stresses in plates, smal rotations and large displacement (w/h>1)
+			\item Extension of Euler berunoulli is called Kirchoff plate. Extension of timoshenko beam is the first order or mindlin shear deformation plate theory.
+			\item $\ve{X}$ is used for the material coordinates and $\ve{x}$ is used for the spatial coordinates. No distinction is made between the material and spatial coordinates. 	
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Classical plate theory}
+		The disp satisfy the kirchoff rules which are an extension of the euler bernoulli hypothesis which are
+		\begin{itemize}
+			\item Straight lines perpendicular to the mid surface remain straight
+			\item Transverse normals do not have elongation
+			\item Cross sections remain perpendiuclar under rotation
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Dislacement and strain fields}
+		\begin{itemize}
+			\item We have the domain of the plate as $\Omega_o \times (-h/2,h/2)$. The boundary of the top surface $z = h/2$ and bottom surface $z = -h/2$ with boundary $\Gamma$ which is a curved surface with outward normal $\ve{n} = n_xe_1 + n_ye_2$
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8 \linewidth]{\pth/nfem/fig30} 		
+			\end{figure}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item The kirchoff hypotehesis implies the following displacement field 
+			\begin{equation}
+			\begin{aligned}
+				u_1(x,y,z,t) = u(x,y,t) - z\frac{\partial w}{\partial x} \\
+				u_2(x,y,z,t) = v(x,y,t) - z\frac{\partial w}{\partial y} \\
+				u_3(x,y,z,t) = w(x,y,t) 
+			\end{aligned}
+			\end{equation}
+			\item Where $u,v,w$ denote the material point in the undeformed of the nerutral axis wherees $u_1,u_2,u_3$ denote any aribitary point location
+			\item The componenets of the Green-Lagrange strain tensor $\ve{E}$ in terms of components of the total displacement vector $u = x(x,t) - X$ (x and X here are the same) is
+			\begin{equation}
+				\tiny
+				\begin{aligned}
+					E_{11} = \frac{\partial u_1}{\partial X_1} + \frac{1}{2}\left[ \left(\frac{\partial u_1}{\partial X_1} \right)^2 +
+					\left(\frac{\partial u_2}{\partial X_1} \right)^2 + 
+					\left(\frac{\partial u_3}{\partial X_1} \right)^2 \right] \\ 
+					E_{22} = \frac{\partial u_2}{\partial X_2} + \frac{1}{2}\left[ \left(\frac{\partial u_1}{\partial X_2} \right)^2 +
+					\left(\frac{\partial u_2}{\partial X_2} \right)^2 + 
+					\left(\frac{\partial u_3}{\partial X_2} \right)^2 \right]\\
+					E_{33} = \frac{\partial u_3}{\partial X_3} + \frac{1}{2}\left[ \left(\frac{\partial u_1}{\partial X_3} \right)^2 +
+					\left(\frac{\partial u_2}{\partial X_3} \right)^2 + 
+					\left(\frac{\partial u_3}{\partial X_3} \right)^2 \right]\\
+					E_{12} = \frac{1}{2}\left[ \frac{\partial u_1}{\partial X_2} + \frac{\partial u_2}{\partial X_1} + 
+					\frac{\partial u_1}{\partial X_1}\frac{\partial u_1}{\partial X_2} +
+					\frac{\partial u_2}{\partial X_1}\frac{\partial u_2}{\partial X_2} +
+					\frac{\partial u_3}{\partial X_1}\frac{\partial u_3}{\partial X_2} +
+					\right]	\\
+					E_{13} = \frac{1}{2}\left[ \frac{\partial u_1}{\partial X_3} + \frac{\partial u_3}{\partial X_1} + 
+					\frac{\partial u_1}{\partial X_1}\frac{\partial u_1}{\partial X_3} +
+					\frac{\partial u_2}{\partial X_1}\frac{\partial u_2}{\partial X_3} +
+					\frac{\partial u_3}{\partial X_1}\frac{\partial u_3}{\partial X_3} +
+					\right]	\\
+					E_{23} = \frac{1}{2}\left[ \frac{\partial u_2}{\partial X_3} + \frac{\partial u_3}{\partial X_2} + 
+					\frac{\partial u_1}{\partial X_2}\frac{\partial u_1}{\partial X_3} +
+					\frac{\partial u_2}{\partial X_2}\frac{\partial u_2}{\partial X_3} +
+					\frac{\partial u_3}{\partial X_2}\frac{\partial u_3}{\partial X_3} +
+					\right]	
+				\end{aligned}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item If the components of the displacement gradient are very small = O($\epsilon$), then the terms having O($\epsilon^2$) can be omitted in the strains. However if the rotations of the transverse normals are moderate (10 -15 degrees), then the following strains are small but not negligible
+			\begin{equation}
+			\left(\frac{\partial u_3}{\partial X_1} \right)^2 \qquad
+			\left(\frac{\partial u_3}{\partial X_2} \right)^2 \qquad
+			\frac{\partial u_3}{\partial X_1}\frac{\partial u_3}{\partial X_2}  
+			\end{equation}
+			\item  Thus the strains take the following (Remember that $E = \varepsilon$ where we say its small strain but moderate rotations)
+			\begin{equation}
+			\tiny
+			\begin{aligned}
+			E_{11} = \varepsilon_{11}= \frac{\partial u_1}{\partial x} + \frac{1}{2}\left[ \left(\frac{\partial u_3}{\partial x} \right)^2 \right] \qquad
+			E_{22} = \frac{\partial u_2}{\partial y} + \frac{1}{2}\left[ 
+			\left(\frac{\partial u_3}{\partial y} \right)^2 \right]\\
+			E_{33} = \frac{\partial u_3}{\partial z} \qquad
+			E_{12} = \frac{1}{2}\left[ \frac{\partial u_1}{\partial y} + \frac{\partial u_2}{\partial x} + 
+			\frac{\partial u_3}{\partial x}\frac{\partial u_3}{\partial y} 
+			\right]	\\
+			E_{13} = \frac{1}{2}\left[ \frac{\partial u_1}{\partial z} + \frac{\partial u_3}{\partial x} 
+			\right]	\qquad
+			E_{23} = \frac{1}{2}\left[ \frac{\partial u_2}{\partial z} + \frac{\partial u_3}{\partial y}
+			\right]	
+			\end{aligned}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item  For this displacement field, we have $\varepsilon_{z} = \frac{\partial u_3}{\partial z} = \frac{\partial w}{\partial z} = 0$ and taking the displacement fields. The strains then reduce to
+			\begin{equation}
+				\begin{aligned}
+				\varepsilon_{xx}= \frac{\partial u}{\partial x} + \frac{1}{2}\left[ \left(\frac{\partial w}{\partial x} \right)^2 - z \frac{\partial^2 w}{\partial x^2}\right] \qquad
+				\varepsilon_{yy} = \frac{\partial v}{\partial y} + \frac{1}{2}\left[ 
+				\left(\frac{\partial w}{\partial y} \right)^2 - z\frac{\partial^2 w}{\partial y^2}\right]\\
+				2\varepsilon_{xy} = \gamma_{xy} = \frac{\partial u}{\partial y} + \frac{\partial v}{\partial x} + 
+				\frac{\partial w}{\partial x}\frac{\partial w}{\partial y} -2z\frac{\partial^2 w}{\partial x \partial y}	\\
+				2\varepsilon_{xz} = -  \frac{\partial w}{\partial x} + \frac{\partial w}{\partial x} = 0\qquad
+				2\varepsilon_{yz} = - \frac{\partial w}{\partial y} + \frac{\partial w}{\partial y} = 0
+				\end{aligned}
+			\end{equation}
+			\item These are called von Karman strains and called classical plate theory with von karman strains. Note that the transverse strains are zero in the classical plate theory. The total strains can be written as membrane + bending strain
+			\begin{equation}
+			\mat{\varepsilon_{xx};\varepsilon_{yy};\gamma_{xy}} =  \mat{\varepsilon_{xx}^0;\varepsilon_{yy}^0;\gamma_{xy}^0} + z\mat{\varepsilon_{xx}^1;\varepsilon_{yy}^1;\gamma_{xy}^1}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item The strains are expanded as : 
+			\begin{equation}
+			\begin{aligned}
+			\mat{\varepsilon_{xx}^0;\varepsilon_{yy}^0;\gamma_{xy}^0} = 
+			\mat{\frac{\partial u}{\partial x} + \frac{1}{2} \left(\frac{\partial w}{\partial x} \right)^2 ; ;
+				 \frac{\partial v}{\partial y} + \frac{1}{2}\left(\frac{\partial w}{\partial y} \right)^2; ;
+				\frac{\partial u}{\partial y} + \frac{\partial v}{\partial x} + 
+				\frac{\partial w}{\partial x}\frac{\partial w}{\partial y} }\qquad
+			\mat{\varepsilon_{xx}^1;\varepsilon_{yy}^1;\gamma_{xy}^1} = - \mat{
+			\frac{\partial^2 w}{\partial x^2};; \frac{\partial^2 w}{\partial y^2};; 2\frac{\partial^2 w}{\partial x \partial y}	}
+			\end{aligned}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Weak form of classical plate theory}
+		\begin{itemize}
+			\item Virtual work statement is used again to derive (Just like 4 beams). We account for thermal effects, where the material does not change with tempearture which is knowon as a fuction of the position  hence ($\delta T = 0$), so temperature eneters throught the constitutive relations.
+			\item Suppose the domain is represented by fem $\Omega_e$ with  distributed transverse loads $q(x,y)$ at the top. $(\sigma_{nn},\sigma_{ns},\sigma_{nz})$ are the stress components on the boundary of the plate
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8 \linewidth]{\pth/nfem/fig31} 		
+			\end{figure}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item The principle of virtual work states that $0 = \delta W^e = \delta W_I^e + \delta W_E^e$
+			\item As noted earlier, the transverse shears $\gamma_{xz},\gamma_{yz},\varepsilon_{zz}$ are zero. Therefore the transverse stresses ($\sigma_{xz},\sigma_{yz},\sigma_{zz}$ ) do not eneter the formulatin because the strains due to these are zero. Even though they are not accounted, in reality they exist to maintain equilibirum, these components can also be specified at the boudary. So they have to be accounted in the equilibirum equations. 
+			\item The internal virtual strain is then given as 
+			\begin{equation}
+				\begin{aligned}
+					\delta W_I^e = \int_A \int_{-\frac{h}{2}}^{\frac{h}{2}} 
+					\left(
+					\sigma_{xx} \delta \varepsilon_{xx} + \sigma_{yy} \delta \varepsilon_{yy} + 2\sigma_{xy} \delta \varepsilon_{xy}
+					\right) dz~dx~dy\\
+					= \int_A \left(N_{xx}\delta \varepsilon_{xx}^0 + M_{xx}\delta\varepsilon_{xx}^1 + N_{yy}\delta\varepsilon_{yy}^0 + M_{yy}\delta\varepsilon_{yy}^1 
+					 + N_{xy}\delta\gamma_{xy}^0 + M_{xy}\delta\gamma_{xy}^1 \right) dx~dy
+				\end{aligned}
+			\end{equation}
+			where N and M are the axial and the moment internal forces per unit length. 
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Plate: Internal forces}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.6 \linewidth]{\pth/nfem/fig32} 		
+		\end{figure}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item The virtual work by the distributed transverse load q(x,y), reaction force of an elastic foundation, in plane normal stress $\sigma_{nn}$, in plane tangential stress $\sigma_{ns}$, transverse shear stress $\sigma_{nz}$ is 
+			\begin{equation}
+			\begin{aligned}
+				\delta W_E^e = - (\int_A q(x,y) \delta w(x,y,\frac{h}{2}) dx~dy + 
+				\int_A F_s(x,y) \delta w(x,y,-\frac{h}{2}) dx~dy
+				\\	+ \int_S \int_{-\frac{h}{2}}^{\frac{h}{2}} \left[ \sigma_{nn} \left(\delta u_n - z \frac{\delta w}{n} \right) + \sigma_{ns} \left(\delta u_s - z \frac{\delta w}{s}\right) 
+				+ \sigma_{nz}\delta w\right] dz~ds ) \\ 
+				= - \left[ \int_S \left(N_{nn}\delta u_n - M_{nn}\frac{\partial \delta w}{\partial n}
+							+ N_{ns}\delta u_s 
+				            - M_{ns}\frac{\partial \delta w}{\partial s} + Q_n \delta w \right)ds
+				            + \int_A (q-kw)\delta w dx~dy
+				 \right] 
+			\end{aligned}
+			\end{equation}
+			\item where Fs = -kw ( Foundation force), the negative sign it is the force applied upwards, but you can think of it like the potential increases as the w increases.
+			\item The last term in the work term is the virtual work of the transverse and normal forces on a boundary that is inclined. Where N = $\int_{-\frac{h}{2}}^{\frac{h}{2}}\sigma$ ,  M = $\int_{-\frac{h}{2}}^{\frac{h}{2}}z\sigma$, $Q_n = \int_{-\frac{h}{2}}^{\frac{h}{2}}\sigma_{nz}$ 
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+	\begin{itemize}
+		\item We now relate the stresses in the direction in the boundary to the internal stresses given in cartesion using stress tensor coordinate transformation
+			\begin{equation}
+			   \mat{\sigma_{nn}; \sigma_{ns}} = \mat{n_x^2,n_y^2,2n_xn_y ; -n_xn_y,n_xn_y,n_x^2 - n_y^2} \mat{\sigma_{xx};\sigma_{yy};\sigma_{xy}}
+			\end{equation}
+	\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Weak forms}
+		\begin{itemize}
+			\item Keeping the weak forms in the full virtual work statement we get
+			\begin{equation}
+			\tiny
+				\begin{aligned}
+					0 =  \int_A \left(N_{xx}\delta \varepsilon_{xx}^0 + M_{xx}\delta\varepsilon_{xx}^1 + N_{yy}\delta\varepsilon_{yy}^0 + M_{yy}\delta\varepsilon_{yy}^1 
+					+ N_{xy}\delta\gamma_{xy}^0 + M_{xy}\delta\gamma_{xy}^1 \right) dx~dy \\ - \left[ \int_S \left(N_{nn}\delta u_n - M_{nn}\frac{\partial \delta w}{\partial n}
+					+ N_{ns}\delta u_s 
+					- M_{ns}\frac{\partial \delta w}{\partial s} + Q_n \delta w \right)ds
+					+ \int_A (q-kw)\delta w dx~dy
+					\right]  \\ 
+					 =  \int_A \left(N_{xx}\delta \varepsilon_{xx}^0 + M_{xx}\delta\varepsilon_{xx}^1 + N_{yy}\delta\varepsilon_{yy}^0 + M_{yy}\delta\varepsilon_{yy}^1 
+					 + N_{xy}\delta\gamma_{xy}^0 + M_{xy}\delta\gamma_{xy}^1 \right) dx~dy \\ - \left[ \int_S \left(N_{nn}\delta u_n - M_{nn}\frac{\partial \delta w}{\partial n}
+					 + N_{ns}\delta u_s 
+					 - M_{ns}\frac{\partial \delta w}{\partial s} + Q_n \delta w \right)ds
+					 + \int_A (q-kw)\delta w dx~dy
+					 \right]  
+				\end{aligned}
+			\footnote{\tiny In the last three statements, It seems the equation has been kept according to the variation but how do you account for $ \delta u_n \quad \delta u_s$ as they will have components in both. Maybe the euler equations will make sense}
+			\end{equation}
+			
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.6 \linewidth]{\pth/nfem/fig33} 		
+			\end{figure}
+	
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Equilibrium equations}
+		\begin{itemize}
+			\item Keeping the virtual parameters in the same order to get the euler equations we get
+			\begin{equation}
+			\tiny
+			\begin{aligned}
+				0 = \int_A \left[ -\left(N_{xx,x} + N_{xy,y}\right)\delta u - \left( N_{xy,x} + N_{yy,y}\right)\delta v
+		  			- \left(M_{xx,xx} + 2M_{xy,xy} + M_{yy,yy} + \mathcal{N} - kw + q\right) \delta w
+							\right] dx~dy \\
+				+ \int_S  (\left(N_{xx}n_x + N_{xy}n_y \right)\delta u  
+			  + \left(N_{xy}n_x + N_{yy}n_y \right)\delta v
+			  + \left( M_{xx,x}n_x + M_{xy,y}n_x + M_{yy,y}n_y + M_{xy,x}n_y + \mathcal{P} \right) \delta w \\
+			  - \left(M_{xx}n_x + M_{xy}n_x \right)\frac{\partial \delta w}{\partial x} 
+			  -\left(M_{xy}n_x + M_{yy}n_y \right)\frac{\partial \delta w}{\partial y} )ds  
+			  -\int_S \left(N_{nn} \delta u_n + N_{ns}\delta u_s - M_{nn}\frac{\partial \delta w}{\partial n} - M_{ns}\frac{\partial \delta w}{\partial s} + Q_n \delta w \right)ds
+			\end{aligned}
+			\end{equation}
+			\item Where 
+				\begin{equation}
+				\tiny
+					\begin{aligned}
+					\mathcal{N} = \frac{\partial }{\partial x} \left(N_{xx}\frac{\partial w}{\partial dx}   + N_{xy}\frac{\partial w}{\partial dy}\right)
+					 + \frac{\partial }{\partial y} \left(N_{xy}\frac{\partial w}{\partial x} 
+					+ N_{yy}\frac{\partial w}{\partial y}\right) \\
+					\mathcal{P} = \left(N_{xx}\frac{\partial w}{\partial x}   + N_{xy}\frac{\partial w}{\partial y}\right) n_x
+					+ \frac{\partial }{\partial y} \left(N_{xy}\frac{\partial w}{\partial x} 
+					+ N_{yy}\frac{\partial w}{\partial y}\right) n_y 
+					\end{aligned}
+				\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.7 \linewidth]{\pth/nfem/fig34} 		
+		\end{figure}
+	\end{frame}
+
+
+	\begin{frame}{Euler-lagrange equilibrium equations}
+		\begin{itemize}
+			\item Keeping the coefficients of the variations (seting $\delta u, \delta v, \delta w = 0$)we get the equilibirum equations given as
+			\begin{equation}
+			\begin{aligned}
+				\delta u : \frac{\partial N_{xx}}{\partial x} + \frac{\partial N_{xy}}{\partial y} = 0\\
+				\delta v : \frac{\partial N_{xy}}{\partial x} + \frac{\partial N_{yy}}{\partial y} = 0\\
+				\delta w : \frac{\partial^2 M_{xx}}{\partial x^2} + 2\frac{\partial^2 M_{xy}}{\partial x \partial y} + \frac{\partial^2 M_{yy}}{\partial y^2} + \mathcal{N} - kw + q = 0
+			\end{aligned}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Boudnary conditions}
+		\begin{itemize}
+			\item To cast the B.C. on an edge whose normal is $\ve{n}$, we express the generalised displacements ($u,v,w,\frac{\partial w}{\partial x}, \frac{\partial w}{\partial y}$) in x,y,z system in the corresponding displacements in normal, tangential and transverse directions. We get
+			\begin{equation}
+			\begin{aligned}
+				u = u_nn_x - u_sn_y \qquad v = u_nn_y + u_sn_x \\ 
+				\frac{\partial w}{\partial x} = \frac{\partial w}{\partial n} n_x 
+				- \frac{\partial w}{\partial s}n_y \qquad 
+				\frac{\partial w}{\partial y} = \frac{\partial w}{\partial n}n_y
+				+ \frac{\partial w}{\partial s}n_x
+			\end{aligned}
+			\end{equation}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.2  \linewidth]{\pth/nfem/fig35} 		
+			\end{figure}
+		Now the derivative of $w$ is a vector which can undergo basis transformation
+ 		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Boundary conditions}
+		\begin{itemize}
+			\item The boundary conditions can be written in the normal, tangenetial coords 
+			\begin{equation}
+			\tiny
+			\begin{aligned}
+			\int_S [ 
+			\left(N_{xx}n_x + N_{xy}n_y\right)\left(\delta u_nn_x - \delta u_sn_y\right) +
+			\left(N_{xy}n_x + N_{yy}n_y\right)\left(\delta u_nn_y + \delta u_sn_x\right) \\ +
+			\left( M_{xx,x}n_x + M_{xy,y}n_x + M_{yy,y}n_y + M_{xy,x}n_y + \mathcal{P} \right) \delta w \\ - 
+			\left(M_{xx}n_x + M_{xy}n_y \right)\left(\frac{\partial w}{\partial n} n_x 
+			- \frac{\partial w}{\partial s}n_y \right) - 
+			\left(M_{xy}n_x + M_{yy}n_y \right)\left(\frac{\partial w}{\partial n} n_y 
+			+ \frac{\partial w}{\partial s}n_x \right)]ds\\
+			 - \int_S \left(N_{nn} \delta u_n + N_{ns}\delta u_s - M_{nn}\frac{\partial \delta w}{\partial n} - M_{ns}\frac{\partial \delta w}{\partial s} + Q_n \delta w \right)ds
+			\end{aligned} 
+			\end{equation}
+			\item $\delta u$ in natural does not change the direction cosines because here they are constant dependant on the geometry we are at and not the variation.
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Boundary conditions}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.7\linewidth]{\pth/nfem/fig36} 		
+		\end{figure}
+	\end{frame}
