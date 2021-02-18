@@ -1,0 +1,28 @@
+% Full instructions available at:
+% https://github.com/elauksap/focus-beamertheme
+
+\documentclass[9pt]{beamer}
+\usetheme{focus}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Typography, change document font
+\usepackage[tt=false, type1=true]{libertine}
+\usepackage[varqu]{zi4}
+\usepackage[libertine]{newtxmath}
+\usepackage[T1]{fontenc}
+
+\usepackage[protrusion=true,expansion=true]{microtype}
+
+% Disable paragraph indentation, and increase gap
+\usepackage{parskip}
+
+%Matrix
+\usepackage{tabstackengine}
+\setstackEOL{;}% row separator
+\setstackTAB{,}% column separator
+\setstacktabbedgap{1ex}% inter-column gap 
+\setstackgap{L}{1.0\normalbaselineskip}% inter-row baselineskip
+\let\mat\bracketMatrixstack
+
+\newcommand{\pth}{.../Notes_figure/}
+\newcommand{\ve}[1]{\mathbf{#1}}

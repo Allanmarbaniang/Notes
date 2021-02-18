@@ -1,0 +1,119 @@
+\input{../../../temp/preamble}
+\input{../../../temp/beamercolorthemefocus.sty}
+
+\title{Differential Geometry  }
+%\subtitle{Subtitle}
+\author{Allan}
+\date{Updated : \today}
+
+
+\begin{document}
+\maketitle
+\tableofcontents	
+
+\section{Differential geometry : Curved computing}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item A shell is comprised of its reference surface, thickness and edges. The thickness of the shell at a point is found as the distance between the bounding surface (Top and bottom surfaces) as measured along a normal to the reference surface that passes through the point.  
+			\item FIX ME???????????? New things also have to be added
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Space curves : Parameterisation of curve}
+		\begin{itemize}
+			\item A 3d curve in a rectangular coordinate system ($x_1,x_2,x_3$) can be represented by the locus of the end point of the position vector
+			\begin{equation}
+				\ve{x =} x_1(t)\ve{e_1} + x_2(t)\ve{e_2} + x_3(t)\ve{e_3} 
+			\end{equation}
+			for all the values of the parameter $t$ that are in the interval $t_1<t<t_2$. Suppose that $\ve{x}$ takes only  a single value of the parameter $t$, then we insure it's uniqueness. 
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Unit tangent vector}
+		\begin{itemize}
+			\item We take $s$ as the variable of the arc length along the space curve. The derivative of the position vector $x$ with respect to $s$ is given as
+			\begin{equation}
+				\frac{d\ve{x}}{ds} = \frac{dx_1}{ds}\ve{e_1} +\frac{dx_2}{ds}\ve{e_2}+\frac{dx_3}{ds}\ve{e_3}
+			\end{equation}
+			\item If we form a scalar product with itself we get
+			\begin{equation}
+				\frac{d \ve{x}}{ds} \cdot \frac{d \ve{x}}{ds} = 
+				\left(\frac{dx_1}{ds} \right)^2 + \left(\frac{dx_2}{ds} \right)^2 + \left(\frac{dx_3}{ds} \right)^2
+			\end{equation}
+			\item From differential calculus we know that
+			\begin{equation}
+				\left(ds \right)^2 = \left(dx_1 \right)^2 + \left(dx_2 \right)^2 + \left(dx_3 \right)^2
+			\end{equation}
+			Hence
+			\begin{equation}
+				\frac{d \ve{x}}{ds} \cdot \frac{d \ve{x}}{ds} =  1
+			\end{equation}
+			This confuese me how the magnitude of the tangent becomes 1, because sometimes in calculus some mainpulations seem very devious
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item We can think of a vector $\Delta\ve{ x}$ joining two points Q and Q' on a curve. The vector $\Delta\ve{ x}/\Delta s$ has the same directiona as $\Delta\ve{ x}$ and as $\Delta s$ approaches 0, $\Delta\ve{ x}/\Delta s$ becomes the tangent vector to the curve at he poin Q. 
+			\item The vector $\ve{T}$ is as the limit of $\Delta s \rightarrow 0$ we get 
+			\begin{equation}
+				\ve{T} = \frac{d \ve{x}}{ds} 
+			\end{equation}
+			\item We also note that 
+			\begin{equation}
+				{{x}'} = \frac{d\ve{x}}{dt} = \frac{d\ve{x}}{ds}\frac{ds}{dt} 
+			\end{equation}
+			This comes from chain rule by the way the parametrisation is done orginally. This is als a tangent vector but it is not of unit length
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Osculating plane, Principla Normal}
+		\begin{itemize}
+			\item The tangent to the Curve at Q is found to be the limiting position of the line connecting the points Q and Q'. Now if we consider the limiting position of a plane passing through three consequitve places. We will get the osculating plane joining the normal and the tangent of a curve.
+			\item The tripple scalar produc of three coplanar vectors is zero and the expression of the osculating plane is as
+			\begin{equation}
+			\ve{(X-x)\cdot ({x}' \times {x}'')}
+			\end{equation}
+			
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Curvature}
+		\begin{itemize}
+			\item By taking the dot product with itself $\ve{T \cdot T = 1}$. If we differentiate this scalar product with respect to the arc length we get 
+			\begin{equation}
+			\frac{d}{ds}(\ve{T\cdot T}) =  2 \ve{T \cdot T}^o = 0
+			\end{equation}
+			where $\ve{T}^o$ is the derivative with respect to s. Now this tells us that the tangent is prependicular to the curvature. We can also then write
+			\begin{equation}
+				\ve{T} = \frac{d\ve{x}}{ds} = \frac{d\ve{x}}{dt} \frac{dt}{ds} = \ve{x'}t^o 
+			\end{equation} 
+			where this comes from chain rule but the parameterisation is messed up, originally it is $\frac{d\ve{x}}{dt} = \frac{d\ve{x}}{ds}\frac{ds}{dt} $. I don't know when things can be used like fractions!! But it checks out here. Also note that s and t will be different functions for different components of $\ve{x}$
+			\item Therefore we can say 
+			\begin{equation}
+			\ve{T^o = x'}t^{oo} + \ve{x''}(t^o)^2
+			\end{equation}
+			Which shoes that the curvature also lies in the plane of $\ve{x'}$ and $\ve{x''}$, or the osculating plane.
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item Since the curvature has been shown to be perpendicular to the tangent $\ve{T}$ we can say that the curvature is parallel to the principal normal given by
+			\begin{equation}
+				\ve{T^o} = k \ve{N} = \ve{k}
+			\end{equation}
+			where $\ve{N}$ is a unit normal vector in the direction of the principal normal to the curve at a point (1/R). We can see that, k is the curvature and $k\ve{\ve{N}}$ is the curvature vector.
+			\item Although the sense of $T^o$ is determined solely by the curve, the sense of the principal normal $\ve{N }$ is arbitary. k therefore depends on the sense of $\ve{N}$.
+	\end{itemize}
+	\end{frame}
+
+\end{document}
