@@ -1,0 +1,162 @@
+\input{../../../temp/preamble}
+\input{../../../temp/beamercolorthemefocus.sty}
+
+
+\begin{document}
+	\tableofcontents
+
+\section{One D problem : Single variable : \today}
+	\begin{frame}
+		\begin{itemize}
+			\item A(u(x)) = f(x) in interval 0 <x<L $\qquad$ B(u) = g
+			\item Consider the differential equation
+			\begin{equation}
+			\begin{aligned}
+				-\frac{d}{dx}\left(k(x,u) \frac{du}{dx} \right) + b(x,u)\frac{du}{dx} + c(x,u)u = f(x) \quad 0<x<L \\
+				\text{Boundary conditions}\\
+				n_xk\frac{du}{dx} + \beta(x,u)(u-u_{\infty}) = \hat{Q}   \quad or \quad u = \hat{u}
+			\end{aligned}
+			\end{equation}
+			\item Note that $n_x=-1, \beta = \beta_1$ at $x = x_a$ and $n_x=1, \beta = \beta_2$ at $x = x_b$
+			\item For a bar with a spring, $u_{\infty} = 0$ and we get the equation that the bar should be equal to the spring force $\beta u$. Or $-k\frac{du}{dx}-\beta_2u = Q_2 $ where Q2 is the extrenal force.
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.7\linewidth]{Figure/fig9} 
+			\end{figure} 
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item Therefore we can keep it generally and nicely as:
+			\begin{equation}
+			\begin{aligned}
+				A(u) = f \quad in \quad 0<x<L \qquad B(u) = g \quad at \quad x=0 or L \\
+				A = -\frac{d}{dx}\left(a \frac{d}{dx} \right) +  \frac{d}{dx} + c. \quad B = n_x a \frac{d}{dx} + \beta, \quad g = \beta u_{\infty} + \hat{Q}
+			\end{aligned}
+			\end{equation}
+			\item If a,b,c are functions of u then A and B become nonlienear.
+			\item In heat a = kA, b = 0 and c = perimeter  $. \beta$
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Weak formulation}
+	\begin{figure}
+			\centering
+			\includegraphics[width=0.7\linewidth]{Figure/fig10} 
+		\end{figure}
+	\end{frame}
+
+
+	\begin{frame}{FEM}
+		\begin{itemize}
+			\item If we use the discretisation then we will get 
+			\begin{equation}
+			K(U)U = F
+			\end{equation}
+		\end{itemize} 
+		\begin{figure}
+		\centering
+		\includegraphics[width=0.8\linewidth]{Figure/fig11} 
+		\end{figure}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item The Boundary terms still confuses me. Especially the sign part. So here it is! Qe is the external force. F is the nodal force with equivalent parts. We actually get the external force from the internal Boundary terms!
+			\begin{figure}
+				\centering
+				\includegraphics[width=1\linewidth]{Figure/fig12} 
+			\end{figure}
+			\item Check problem from Reddy for nonlinear constraints etc.
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}{Solution of nonlinear algebrai equations	}
+		\begin{itemize}
+			\item Direct iteration procedure
+			\item Newton rhapson method
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Direct Iteration procedure}
+		\begin{itemize}
+			\item We solve this system of equations using direct iteration, Picard iteration or method of successive substitutions
+			\begin{equation}
+				\ve{K(U^{(r-1)})U^r = F(U^{(r-1)})}
+			\end{equation}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8\linewidth]{Figure/fig13} 
+			\end{figure}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Direct Iteration procedure}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.5\linewidth]{Figure/fig14} 
+		\end{figure}
+		\begin{itemize}
+			\item The method can be accelerated by using a weighted average of solutions from the last two iterations
+		\begin{equation}
+			\begin{aligned}
+				\ve{U^r = K(\bar{U})^{-1}F(\bar{U})} \\
+				\ve{\bar{U} = \beta U^{(r-2)} + (1-\beta)U^{(r-1)}}
+			\end{aligned}
+		\end{equation}
+			\item Check Reddy 184 for some pages
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Newtons Iteration procedure}
+		\begin{itemize}
+			\item In NM we expand he residual vector $\ve{R^{(r)}}$ in Taylor series about a kown solution $\ve{U^{(r-1)}}$ to get
+			\begin{equation}
+				\ve{R^r = R^{(r-1)} + \left(\frac{\partial R}{\partial U} \right)^{(r-1)} {\Delta} U + O(h^2)}
+			\end{equation}
+			where $\Delta U =  U^r - U^{(r-1)}$
+			\item And saying that R in the next iteration should be zero we get
+			\begin{equation}
+			\begin{aligned}
+				\left(\frac{\partial R}{\partial U} \right)^{(r-1)}\Delta U = -R^{(r-1)} \\
+				T^{(r-1)} U^r = -R^{(r-1)}  + T^{(r-1)} U^{r-1}
+			\end{aligned}
+			\end{equation} 
+			where T is the tangent matrix can be found at element level given as
+			\begin{equation}
+			\left(T_{IJ} = \frac{\partial R_I}{\partial U_J} = K_{IJ} + \sum_{m=1}^{N} \left(
+			\frac{\partial K_{Im}}{\partial U_j} U_m\right) - \frac{\partial F_I}{\partial U_J} \right)^e
+			\end{equation}
+			The force derivative is zero if it is not a function of the load
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{NR method}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.5\linewidth]{Figure/fig15} 
+			\includegraphics[width=0.45\linewidth]{Figure/fig16} 		
+		\end{figure}	
+	\end{frame}
+
+
+	\begin{frame}{Comments}
+		\begin{itemize}
+			\item In the direct iteration method, the actual bc are applied at each iteration. In NR we find the increment to the known solution. If previous displ satisfies, then the increment should be zero and satisfy the boundary condition. 
+			\item The symmetrry of K and T depends on the weak form. even if K is symmetric, T may not be symmetric.
+			\item T can be approximate, and convergance is only when the residual is small. If it is only updated once then it is called the modified Netwons method.
+			\item See the problem in Reddy -188 . Finding T	
+		\end{itemize}
+	\end{frame}
+
+\end{document}
