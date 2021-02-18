@@ -1,4 +1,9 @@
-\section{Discretisation}
+\input{../../../temp/preamble}
+\input{../../../temp/beamercolorthemefocus.sty}
+
+
+\begin{document}
+	\section{Discretisation}
 
 	\begin{frame}
 		\begin{itemize}
@@ -79,7 +84,7 @@
 	\begin{frame}{Problem \#1}
 		\begin{figure}
 			\centering
-			\includegraphics[width=0.5\linewidth]{\pth/continuum/fig12}
+			\includegraphics[width=0.5\linewidth]{Figure/fig12}
 		\end{figure}
 		\begin{itemize}
 			\item The shape function are 
@@ -277,7 +282,7 @@
  	\begin{frame}{Problem \#3 : Find tangent stifness components between node 2 and 3}
 		\begin{figure}
  			\centering
- 			\includegraphics[width=0.45\linewidth]{\pth/continuum/fig12} 	\includegraphics[width=0.5\linewidth]{\pth/continuum/fig13}
+ 			\includegraphics[width=0.45\linewidth]{Figure/fig12} 	\includegraphics[width=0.5\linewidth]{Figure/fig13}
  		\end{figure}
  	
  		{\tiny
@@ -366,7 +371,7 @@
  	\begin{frame}{Tangent matrix}
 		\begin{figure}
  			\centering
- 			\includegraphics[width=0.5\linewidth]{\pth/continuum/fig14} 
+ 			\includegraphics[width=0.5\linewidth]{Figure/fig14} 
  		\end{figure}
 	 	\begin{itemize}
 			\item For an element $e$ linking nodes a and b we find $\ve{K_{ab}^e = K_{c,ab}^e + K_{\sigma,ab}^e + K_{p,ab}^e}$  (Fig a)
@@ -395,3 +400,5 @@
  			\item Arc-Length method 			
  		\end{itemize}
  	\end{frame}
+ 
+\end{document}
