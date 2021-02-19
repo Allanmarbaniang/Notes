@@ -140,7 +140,78 @@
 
 
 	\begin{frame}
-		
+		\begin{itemize}
+			\item In terms of plates we have three condensed degrees of freedom $\Delta^{1},\Delta^{2},\Delta^{3}$ which correspond to (For each node) 4 dof for u, v and 12 or 16 dof for $w, \frac{dw}{dx}, \frac{dw}{dy}$. Remember in conforming plates we will also have $\frac{d^{2}w}{dxdy}$ as a dof
+			\item % TODO: \usepackage{graphicx} required
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8\linewidth]{Figure/6}
+				\label{fig:6}
+			\end{figure}
+			\item We can see a similar arrangement to how it was done previously. Note that here n will depend on the dof type, u,v, and transverse dofs. The type is again represented with $\gamma$
+			
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		\begin{itemize}
+			\item % TODO: \usepackage{graphicx} required
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8\linewidth]{Figure/7}
+				\label{fig:7}
+			\end{figure}
+			\item Note that just in the beam in case of $K^{11}$, here all the nonlinearity is only due to the presence of $\frac{dw}{dx}$, therefore when we take the derivative with respect to $\Delta ^{\beta}_j$ we know that all the terms will be zero when $\beta$ is 1,2.  
+			
+			
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{$T^{13}$}
+		\begin{itemize}
+			\item % TODO: \usepackage{graphicx} required
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.6\linewidth]{Figure/8}
+				\label{fig:8}
+			\end{figure}
+			\item We see that the derivative is inside and now only concerened with the p = 12 or 16, as the other p derivatives terms are zero, i.e $\gamma = 1,2$. 
+			\item Remember again that the shape functions are constant. It's their coefficients (or dofs) that we are finding the derivative of.
+			
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{$T^{23}$}
+		\begin{itemize}
+			\item % TODO: \usepackage{graphicx} required
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8\linewidth]{Figure/9}
+				\label{fig:9}
+			\end{figure}
+			\item Here again we see the terms due to $\gamma = 1,2$ become zero.
+			
+			
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{$T^{33}$}
+		\begin{itemize}
+			\item % TODO: \usepackage{graphicx} required
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8\linewidth]{Figure/10}
+				\label{fig:10}
+			\end{figure}
+			\item Here we see that all stiffness terms have the nonlinear $\frac{dw}{dx}$
+			\item These derivations are found in page329 Reddy.
+			\item Note that $\frac{dw}{dx}$ is the term getting differentiated and $\frac{1}{\partial \Delta^{3}_j} (\frac{dw}{dx})^{2} =  2\frac{dw}{dx} \frac{d \phi_j}{dx}$		
+			
+		\end{itemize}
 	\end{frame}
 
 \end{document}
