@@ -663,71 +663,13 @@
 			\item \textbf{Transient:}Check Reddy
 	\end{itemize}
 	\end{frame}
+
+	\begin{frame}{Example 7.6.1}
+		\begin{itemize}
+			\item 
+			
+		\end{itemize}
+	\end{frame}
 \end{document}
 
-\section{Nonlinear bending of shells}
 
-	
-	\begin{frame}{Introduction}
-		\begin{itemize}
-			\item Shells are much like plates except that they are curved. 
-			\item FEM models of shells are developed using (1) shell theory or (2) 2-D equations obtained from a degenerated 3D elasticity model 
-			\item Shell theory are developed, are origninally based on Kirchoff-Love kinematic hypothesis
-			\item Some group of shell theories is based on order magnitude on strains and rotations in full nonlinear equations (called finite rotation theories). 
-			\begin{itemize}
-				\item Strains and rotations about the normal to he surface are assumed to be of order $\epsilon<<1$
-				\item Roations about tangents to the surface are organised in a consistent classiciation where for each range of magnitude of ratioans specific shell euqations are obtained. 
-			\end{itemize}
-		\item Shells can be synclastic or anticlastic. A curved surface is developable if it can be developed to a plane without sretching. Nondevelopable requires cuting or deforming. These are stronger than developable because they need additional forces to collapse to planar surfaces. 
-		\end{itemize}
-	\end{frame}
-
-
-	\begin{frame}{Governing equations}
-		\begin{figure}
-			\centering
-			\includegraphics[width=0.65\linewidth]{Figure/fig48}  		
-		\end{figure}
-	\end{frame}
-
-
-	\begin{frame}{Differential geometry}
-		\begin{itemize}
-			\item Take a curved shell element of uniform thickness. Here ($\xi_1,\xi_2,\zeta$) which denote the curvilinear coordinates such that $\xi_1, \xi_2$ curves are the lines of crvature of the middle surface ($\zeta = 0$). 
-			\item The position vector of a point ($\xi_1,\xi_2,0$) is denote by $\ve{r}$ and any other arbitary point is denoted by $\ve{R}$
-			\item A differential line element on the middle suface can be written as 
-			\begin{equation}
-			d\ve{r} = \frac{\partial \ve{r}}{\partial \xi_a}d\xi_a = \ve{g}_a d\xi_a , \quad \ve{g}_a = \frac{\partial \ve{r}}{\partial \xi_a} \quad (a =1,2)
-			\end{equation}
-			where the vectors $\ve{g}_1$ and $\ve{g}_2$ are tangent to the $\xi_1,\xi_2$ coordinates lines as shown.
-			\item  The components of the metric tensor $g_{ab}$, (a,b=1,2) are 
-			\begin{equation}
-			\ve{g}_a.\ve{g}_b = g_{ab},  \qquad p_1 = \sqrt{g_{11}}, \qquad p_2 = \sqrt{g_{22}}, \qquad \ve{g_1.g_2} = p_1p_2cos \chi
-			\end{equation}
-			where $\chi$ denotes the angle between the coordinate curves. \footnote{Note that $\ve{\hat{n}},p_1,p_2$ are functions of $\xi_1,\xi_2$}
-			\item The normal vector is found as
-			\begin{equation}
-			\ve{\hat{n}} = \frac{\ve{g_1 \times g_2}}{p_1p_2sin \chi}
-			\end{equation}
-		\end{itemize}	
-	\end{frame}
-
-
-	\begin{frame}{Differential geometry : continued}
-		\begin{itemize}
-			\item The square of the distance $dS$,say between points ($\xi_1,\xi_2,0$) and ($\xi_1 + d\xi_1,\xi_2+d\xi_2,0$) on th emiddle surface is given by
-			\begin{equation}
-			 (ds)^2 = d\ve{r}. d\ve{r} = g_{ab}d\xi_a d\xi_b = p_1^2(d\xi_1)^2 + p_2^2(d\xi_2)^2 + 2a_1a_2cos~\chi~d\xi_1 d\xi_2
-			\end{equation}
-			The RHS is called the first quadratic form of the surface which allows us to find infinitesimal lengths, angles and area. The terms $p_1^2,~p_2^2,~p_1p_2cos\chi$ are called the first fundamental quantities
-			\item Let $\ve{r}= \ve{r}(s)$ be the equation of a curve $s$ on the surface. The unit vector tangent to the curve is
-			\begin{equation}
-				\ve{\hat{t}} =  \frac{d \ve{r}}{d   s} = \frac{\partial \ve{r}}{\partial \xi_a} \frac{\partial \xi_a}{\partial s} = \ve{g}_a \frac{\partial \xi_a}{\partial s}
-			\end{equation}			
-		\end{itemize}
-	\end{frame}
-
-
-	\begin{frame}{Governing E}
-		Im not writing this because the conventions are too long. Please check the annotated book
-	\end{frame}
