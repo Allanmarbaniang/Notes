@@ -83,6 +83,47 @@
 		\end{itemize}
 	\end{frame}
 
+
+	\section{Potential energy}
+	\begin{frame}
+		\begin{itemize}
+			\item I have always had a confusion whether the potential energy is defined with respect to the position or with respect to displacements
+			\item The answer is more nuanced. It can be with both but the times when it is used has to be understood properly in terms of what it actually represents.
+			\item The Residual is the derivative of the potential energy with respect to its degrees of freedom
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}
+		\begin{equation}
+			\Pi() = \text{Internal - External potential}
+		\end{equation}
+		Now suppose $\ve{x}$ is the position and $\ve{u}$ are the nodal dispalcements.
+		Can write
+		\begin{equation}
+			\Pi(\ve{x}) = C(x_1 - x_2)  - Px_1 - Px_2
+		\end{equation}
+		where we say that C is a material parameter, and P are external loads. Now there is a problem with this equation because the internal energy is defined with respect to the relative displacements/deformation/displacement gradients of the continuum. 
+		
+		A more correct way is to write
+		\begin{equation}
+		\Pi(\ve{u}) = C(u_1 - u_2)  - Pu_1 - Pu_2
+		\end{equation}
+		So now the difference in the displacements gives the deformation that results in the strain energy. 
+		
+		However what about the external work. The external work can be thought of as the potential of the load due it's movement in u. It can also be sometimes thought of as the potential due to its' position, in the case of the well known potential of a ball = mgh, where h is it's position. But here the difference is P is dependant on h.
+	\end{frame}
+
+	\begin{frame}
+		\begin{itemize}
+			\item One way in which that can be made clear is if we represent the potential with respect to the position, but we include the initial undeformed position to give the displacement. It would look something like this:
+			\begin{equation}
+				\Pi(\ve{x}) = C((x_1  - x_{1ref})- (x_2- x_{2ref}) ) - P(x_1  - x_{1ref}) - P(x_2- x_{2ref})
+			\end{equation}
+			where the ref are the initial coordinates. So we can see that in the external work the coefficients $Px_{1ref}$ are constants and so are not important when you only want to minimize the potential energy. So Pu and Px are okay!
+	 	\end{itemize}
+	\end{frame}
+
+
 	\begin{frame}
 		 We can find the directional derivative of different things like the determinant of a matrix etc. Check Bonet Page 16
 	\end{frame}
