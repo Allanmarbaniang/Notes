@@ -1,0 +1,62 @@
+\input{../../../temp/preamble}
+\input{../../../temp/beamercolorthemefocus.sty}
+
+
+\begin{document}
+	\tableofcontents
+	
+\section{Scaling : \today}
+
+	\begin{frame}{Scaling (Fox Stanton 1968)}
+		\begin{itemize}
+			\item Sometimes we want to keep all the variables in the same order of magnitude (suppose forces, moments. Displacements, rotations)
+			\item We can simply scale  bya  simple multiplication of the individual dof with a non singular diagonal transofmratio matrix
+			\item Eg we can have zero eigen values for rigid body displacements. Sometimes we can have the non zero eigen values range over six orders and some dof have larger strain energies than others.
+		\end{itemize}
+\texttt{}	\end{frame}
+
+	\begin{frame}{Gerschgorin's theorem}
+		\begin{itemize}
+			\item This theorem states that every eigenvalue of a matrix $\ve{A}$ with enteties $a_{ij}$ lies in at leasat one of the disks centered at $a_{ii}$ and of radii $R_i$
+			\begin{equation}
+				R_i = \sum_{j\neq i } |a_{ij}|
+			\end{equation}
+			where $R_i$ is the sum of the absolute values of the non diagonal enteries in the $i$th row
+			\item Let D($a_{ii},R_i$) be a closed disc centered at a with radius R. Such a disc is a Gershgorin disc. 
+			\item Every eigen value of $A$ lies within at least one of the Gersgorin discs.
+			\item Shift in orders can be because of the shift in the center without the raius isze also.  This happens when the condition number is affected by change in phyical properties (Like size of the problem) 
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}
+		% TODO: \usepackage{graphicx} required
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.7\linewidth]{Figure/screenshot001}
+			\caption{}
+			\label{fig:screenshot001}
+		\end{figure}
+		
+	\end{frame}
+
+	\begin{frame}{Scaling criteria}
+		\begin{itemize}
+			\item Suppose we have the potential energy in the form 
+			\begin{equation}
+				\Pi(X) = \frac{1}{2} X^{T}KX - X^{T}F
+			\end{equation}
+			\item Operated in scale coordiantes as
+			\begin{equation}
+				\Pi(Y) = \frac{1}{2} Y^{T}K'Y - Y^{T}F'
+			\end{equation}
+			where $K'=D^{T}KD \qquad F' = D^{T}F$\\
+			$d_{ii}=\frac{1}{c(k_ii)^{1/2}} \qquad d_{ij}=0 \qquad i \neq j$
+			\item This centers all the Gerschogorin disks at the same point namely $1/c^{2}$
+			\item c =$1/n^{1/2}$ where n is the max no of nonzero elements is nonzero is a good choice.
+			\item Can also be shown that they are bounded. BUT WHAT ABOUT NONLINEAR
+			\item The existence of the scaling transformation requires that the diagonals > 0. Which is satisfied in positive definite matrixes.
+			\item Can read Developments in structural analysis by direct energy minimization for more details.
+		\end{itemize}
+	\end{frame}
+\end{document}
